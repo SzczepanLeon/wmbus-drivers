@@ -31,23 +31,28 @@ private:
     esphome::optional<float> ret_val{};
     uint32_t usage = 0;
     size_t i = 25;
-    while (i < telegram.size()) {
-      int c = telegram[i];
-      int size = this->registerSize(c);
-      if (c == 0xff) break; // An FF signals end of telegram padded to encryption boundary,
-      // FFFFFFF623A where 4 last are perhaps crc or counter?
-      i++;
-      if (size == -1 || i+size >= telegram.size()) {
-        break;
+    if (telegram[10] == 0xb6) {
+      // Oups really old style telegram that we cannot decode.
+    }
+    else {
+      while (i < telegram.size()) {
+        int c = telegram[i];
+        int size = this->registerSize(c);
+        if (c == 0xff) break; // An FF signals end of telegram padded to encryption boundary,
+        // FFFFFFF623A where 4 last are perhaps crc or counter?
+        i++;
+        if (size == -1 || i+size >= telegram.size()) {
+          break;
+        }
+        if (c == 0x10 && size == 4 && i+size < telegram.size()) {
+          // We found the register representing the total
+          usage = ((uint32_t)telegram[i+3] << 24) | ((uint32_t)telegram[i+2] << 16) |
+                  ((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]);
+          ret_val = usage / 1000.0;
+          break;
+        }
+        i += size;
       }
-      if (c == 0x10 && size == 4 && i+size < telegram.size()) {
-        // We found the register representing the total
-        usage = ((uint32_t)telegram[i+3] << 24) | ((uint32_t)telegram[i+2] << 16) |
-                ((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]);
-        ret_val = usage / 1000.0;
-        break;
-      }
-      i += size;
     }
     return ret_val;
   };
@@ -59,13 +64,13 @@ private:
       // After 0x0F there is always:
       // next 4B : Date - In default frame
       // next 3B : Faults - In default frame 
-          
-      case 0x00: return 4; // Date 
+
+      case 0x00: return 4; // Date
       case 0x01: return 3; // Faults - In default frame f.ex. 0F 09 4D A1 97 18 02 00 -> 18 02 00 -> 00 02 18 -> 0x0218
-      
+
       case 0xA1:
       case 0x10: return 4; // Total volume - In default frame
-      
+
       case 0x11: return 2; // Flow
 
       case 0x40: return 6; // Detectors
@@ -81,44 +86,44 @@ private:
       case 0x75: return 1+6*4; // Historical data
       case 0x7B: return 1+12*4; // Historical data
 
-      case 0x80: 
-      case 0x81: 
-      case 0x82: 
-      case 0x83: 
-      case 0x84: 
-      case 0x86: 
+      case 0x80:
+      case 0x81:
+      case 0x82:
+      case 0x83:
+      case 0x84:
+      case 0x86:
       case 0x87: return 10; // Events
-      
+
       case 0x85:
-      case 0x88: 
+      case 0x88:
       case 0x8F: return 11; // Events
 
       case 0x8A: return 9; // Events
-      
+
       case 0x8B:
       case 0x8C: return 6; // Events
-      
+
       case 0x8E: return 7; // Events
-      
+
       case 0xA0: return 4;
-      
+
       case 0xA2: return 1;
-      
+
       case 0xA3: return 7;
-      
+
       case 0xA4: return 4;
-      
+
       case 0xA5:
       case 0xA9:
       case 0xAF: return 1;
-      
+
       case 0xA6: return 3;
-      
+
       case 0xA7:
       case 0xA8:
       case 0xAA:
-      case 0xAB: 
-      case 0xAC: 
+      case 0xAB:
+      case 0xAC:
       case 0xAD: return 2;
 
       case 0xB0: return 5;
@@ -127,7 +132,7 @@ private:
       case 0xB3: return 8;
       case 0xB4: return 2;
       case 0xB5: return 16;
-      
+
       // Unknown
       case 0xB6: return 3;
       case 0xB7: return 3;
