@@ -7,6 +7,7 @@
 #include "driver_bmeters.h"
 #include "driver_c5isf.h"
 #include "driver_compact5.h"
+#include "driver_dme_07.h"
 #include "driver_elf.h"
 #include "driver_evo868.h"
 #include "driver_fhkvdataiii.h"

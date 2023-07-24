@@ -1,5 +1,5 @@
 /*
-  Based on: https://github.com/weetmuts/wmbusmeters/blob/master/src/driver_fhkvdataiii.cc
+  Based on: https://github.com/wmbusmeters/wmbusmeters/blob/master/src/driver_fhkvdataiii.cc
   Copyright (C) 2019-2022 Fredrik Öhrström (gpl-3.0-or-later)
 */
 

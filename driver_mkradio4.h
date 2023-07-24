@@ -1,5 +1,5 @@
 /*
-  Based on: https://github.com/weetmuts/wmbusmeters/blob/master/src/driver_mkradio4.cc
+  Based on: https://github.com/wmbusmeters/wmbusmeters/blob/master/src/driver_mkradio4.cc
   Copyright (C) 2019-2023 Fredrik Öhrström (gpl-3.0-or-later)
 */
 
