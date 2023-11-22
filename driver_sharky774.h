@@ -24,28 +24,23 @@ struct Sharky774 : Driver
     add_to_map(ret_val, "return_temperature_c", this->get_0A5E(telegram));
     add_to_map(ret_val, "operating_time_d", this->get_0B26(telegram));
 
-    if (ret_val.size() > 0)
-    {
+    if (ret_val.size() > 0) {
       return ret_val;
     }
-    else
-    {
+    else {
       return {};
     }
   };
 
 private:
-  esphome::optional<float> get_total_energy_consumption_gj(std::vector<unsigned char> &telegram)
-  {
+  esphome::optional<float> get_total_energy_consumption_gj(std::vector<unsigned char> &telegram) {
     esphome::optional<float> ret_val{};
     uint32_t usage = 0;
     size_t i = 11;
     uint32_t total_register = 0x0C0E;
-    while (i < telegram.size())
-    {
+    while (i < telegram.size()) {
       uint32_t c = (((uint32_t)telegram[i + 0] << 8) | ((uint32_t)telegram[i + 1]));
-      if (c == total_register)
-      {
+      if (c == total_register) {
         i += 2;
         usage = bcd_2_int(telegram, i, 4);
         ret_val = usage / 1000.0;

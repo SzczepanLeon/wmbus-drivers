@@ -333,17 +333,14 @@ protected:
     return ret_val;
   };
 
-  esphome::optional<float> get_0C2B(std::vector<unsigned char> &telegram)
-  {
+  esphome::optional<float> get_0C2B(std::vector<unsigned char> &telegram) {
     esphome::optional<float> ret_val{};
     uint32_t usage = 0;
     size_t i = 11;
     uint32_t total_register = 0x0C2B;
-    while (i < telegram.size())
-    {
+    while (i < telegram.size()) {
       uint32_t c = (((uint32_t)telegram[i + 0] << 8) | ((uint32_t)telegram[i + 1]));
-      if (c == total_register)
-      {
+      if (c == total_register) {
         i += 2;
         usage = bcd_2_int(telegram, i, 4);
         // in kW
@@ -356,17 +353,14 @@ protected:
     return ret_val;
   };
 
-  esphome::optional<float> get_0B3B(std::vector<unsigned char> &telegram)
-  {
+  esphome::optional<float> get_0B3B(std::vector<unsigned char> &telegram) {
     esphome::optional<float> ret_val{};
     uint32_t usage = 0;
     size_t i = 11;
     uint32_t total_register = 0x0B3B;
-    while (i < telegram.size())
-    {
+    while (i < telegram.size()) {
       uint32_t c = (((uint32_t)telegram[i + 0] << 8) | ((uint32_t)telegram[i + 1]));
-      if (c == total_register)
-      {
+      if (c == total_register) {
         i += 2;
         usage = bcd_2_int(telegram, i, 3);
         // in l/h
@@ -379,17 +373,14 @@ protected:
     return ret_val;
   };
 
-  esphome::optional<float> get_0B26(std::vector<unsigned char> &telegram)
-  {
+  esphome::optional<float> get_0B26(std::vector<unsigned char> &telegram) {
     esphome::optional<float> ret_val{};
     uint32_t usage = 0;
     size_t i = 11;
     uint32_t total_register = 0x0B26;
-    while (i < telegram.size())
-    {
+    while (i < telegram.size()) {
       uint32_t c = (((uint32_t)telegram[i + 0] << 8) | ((uint32_t)telegram[i + 1]));
-      if (c == total_register)
-      {
+      if (c == total_register) {
         i += 2;
         usage = bcd_2_int(telegram, i, 3);
         // in day
