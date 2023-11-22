@@ -12,7 +12,7 @@
 
 struct Unismart: Driver
 {
-  Unismart() : Driver(std::string("unismart")) {};
+  Unismart(std::string key = "") : Driver(std::string("unismart"), key) {};
   virtual esphome::optional<std::map<std::string, float>> get_values(std::vector<unsigned char> &telegram) override {
     std::map<std::string, float> ret_val{};
 

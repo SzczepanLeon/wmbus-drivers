@@ -12,7 +12,7 @@
 
 struct FhkvdataIII: Driver
 {
-  FhkvdataIII() : Driver(std::string("fhkvdataiii")) {};
+  FhkvdataIII(std::string key = "") : Driver(std::string("fhkvdataiii"), key) {};
   virtual esphome::optional<std::map<std::string, float>> get_values(std::vector<unsigned char> &telegram) override {
     std::map<std::string, float> ret_val{};
 

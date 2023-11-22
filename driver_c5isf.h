@@ -12,7 +12,7 @@
 
 struct C5isf: Driver
 {
-  C5isf() : Driver(std::string("c5isf")) {};
+  C5isf(std::string key = "") : Driver(std::string("c5isf"), key) {};
   virtual esphome::optional<std::map<std::string, float>> get_values(std::vector<unsigned char> &telegram) override {
     std::map<std::string, float> ret_val{};
 

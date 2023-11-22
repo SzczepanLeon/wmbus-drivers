@@ -12,7 +12,7 @@
 
 struct Dme07: Driver
 {
-  Dme07() : Driver(std::string("dme07")) {};
+  Dme07(std::string key = "") : Driver(std::string("dme07"), key) {};
   virtual esphome::optional<std::map<std::string, float>> get_values(std::vector<unsigned char> &telegram) override {
     std::map<std::string, float> ret_val{};
 

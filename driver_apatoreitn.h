@@ -12,7 +12,7 @@
 
 struct ApatorEITN: Driver
 {
-  ApatorEITN() : Driver(std::string("apatoreitn")) {};
+  ApatorEITN(std::string key = "") : Driver(std::string("apatoreitn"), key) {};
   virtual esphome::optional<std::map<std::string, float>> get_values(std::vector<unsigned char> &telegram) override {
     std::map<std::string, float> ret_val{};
 

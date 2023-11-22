@@ -12,7 +12,7 @@
 
 struct Compact5: Driver
 {
-  Compact5() : Driver(std::string("compact5")) {};
+  Compact5(std::string key = "") : Driver(std::string("compact5"), key) {};
   virtual esphome::optional<std::map<std::string, float>> get_values(std::vector<unsigned char> &telegram) override {
     std::map<std::string, float> ret_val{};
 

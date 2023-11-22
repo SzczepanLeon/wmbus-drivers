@@ -12,7 +12,7 @@
 
 struct Apator162: Driver
 {
-  Apator162() : Driver(std::string("apator162")) {};
+  Apator162(std::string key = "") : Driver(std::string("apator162"), key) {};
   virtual esphome::optional<std::map<std::string, float>> get_values(std::vector<unsigned char> &telegram) override {
     std::map<std::string, float> ret_val{};
 

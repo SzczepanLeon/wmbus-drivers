@@ -12,7 +12,7 @@
 
 struct Qheat: Driver
 {
-  Qheat() : Driver(std::string("qheat")) {};
+  Qheat(std::string key = "") : Driver(std::string("qheat"), key) {};
   virtual esphome::optional<std::map<std::string, float>> get_values(std::vector<unsigned char> &telegram) override {
     std::map<std::string, float> ret_val{};
 

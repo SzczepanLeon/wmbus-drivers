@@ -3,7 +3,12 @@
 #include <vector>
 #include <string>
 #include <map>
+#include "esphome/core/log.h"
 #include "esphome/core/optional.h"
+
+static const char *TAG = "wmbus-drivers";
+
+using namespace esphome;
 
 struct Driver
 {
@@ -13,19 +18,27 @@ public:
   virtual esphome::optional<std::map<std::string, float>> get_values(std::vector<unsigned char> &telegram) = 0;
 
   std::string get_name() { return this->driver_type_; };
+  std::string get_key() { return this->key_; };
 
 protected:
-  Driver(std::string driver_type) : driver_type_(driver_type) {};
+  Driver(std::string driver_type, std::string key = "") :
+         driver_type_(driver_type),
+         key_(key) {
+    ESP_LOGVV(TAG, "Added driver '%s' with key '%s'",
+             this->driver_type_.c_str(), this->key_.c_str());
+  };
 
   void add_to_map(std::map<std::string, float> &values,
                   std::string name,
                   esphome::optional<float> value) {
     if (value.has_value()) {
+      ESP_LOGVV(TAG, "Value added to map");
       values[name] = *value;
     }
   };
 
   uint32_t bcd_2_int(const std::vector<unsigned char> &telegram, size_t start, size_t length) {
+    ESP_LOGVV(TAG, "Converting BCD to INT");
     uint32_t result{0};
     uint16_t l_half{0};
     uint16_t h_half{0};
@@ -54,6 +67,7 @@ protected:
         usage = ((uint32_t)telegram[i+3] << 24) | ((uint32_t)telegram[i+2] << 16) |
                 ((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]);
         ret_val = usage / 1000.0;
+        ESP_LOGVV(TAG, "Found register '0413' with '%d'->'%f'", usage, ret_val.value());
         break;
       }
       i++;
@@ -73,6 +87,7 @@ protected:
         usage = bcd_2_int(telegram, i, 4);
         // in kWh
         ret_val = usage / 3.6;
+        ESP_LOGVV(TAG, "Found register '0C0E' with '%d'->'%f'", usage, ret_val.value());
         break;
       }
       i++;
@@ -92,6 +107,7 @@ protected:
         usage = bcd_2_int(telegram, i, 4);
         // in kWh
         ret_val = usage / 36.00000;
+        ESP_LOGVV(TAG, "Found register '0C0D' with '%d'->'%f'", usage, ret_val.value());
         break;
       }
       i++;
@@ -111,6 +127,7 @@ protected:
         usage = bcd_2_int(telegram, i, 4);
         // in kWh
         ret_val = usage / 1000.0;
+        ESP_LOGVV(TAG, "Found register '0C03' with '%d'->'%f'", usage, ret_val.value());
         break;
       }
       i++;
@@ -130,6 +147,7 @@ protected:
         usage = bcd_2_int(telegram, i, 4);
         // in kWh
         ret_val = usage / 10.0;
+        ESP_LOGVV(TAG, "Found register '0C05' with '%d'->'%f'", usage, ret_val.value());
         break;
       }
       i++;
@@ -149,6 +167,7 @@ protected:
         usage = bcd_2_int(telegram, i, 4);
         // in kWh
         ret_val = usage / 1.0;
+        ESP_LOGVV(TAG, "Found register '0C06' with '%d'->'%f'", usage, ret_val.value());
         break;
       }
       i++;
@@ -167,6 +186,7 @@ protected:
         i += 2;
         usage = bcd_2_int(telegram, i, 4);
         ret_val = usage / 1000.0;
+        ESP_LOGVV(TAG, "Found register '0C13' with '%d'->'%f'", usage, ret_val.value());
         break;
       }
       i++;
@@ -186,6 +206,7 @@ protected:
         usage = bcd_2_int(telegram, i, 4);
         // in kWh
         ret_val = usage / 36000.0;
+        ESP_LOGVV(TAG, "Found register '0C0A' with '%d'->'%f'", usage, ret_val.value());
         break;
       }
       i++;
@@ -205,6 +226,7 @@ protected:
         usage = bcd_2_int(telegram, i, 6);
         // in kWh
         ret_val = usage / 36000.0;
+        ESP_LOGVV(TAG, "Found register '0E0A' with '%d'->'%f'", usage, ret_val.value());
         break;
       }
       i++;
@@ -224,6 +246,7 @@ protected:
         usage = bcd_2_int(telegram, i, 6);
         // in kWh
         ret_val = usage / 100000.0;
+        ESP_LOGVV(TAG, "Found register '0E01' with '%d'->'%f'", usage, ret_val.value());
         break;
       }
       i++;
@@ -243,6 +266,7 @@ protected:
         usage = bcd_2_int(telegram, i, 2);
         // in kW
         ret_val = usage / 10.0;
+        ESP_LOGVV(TAG, "Found register '0A2D' with '%d'->'%f'", usage, ret_val.value());
         break;
       }
       i++;
@@ -262,6 +286,7 @@ protected:
         usage = bcd_2_int(telegram, i, 2);
         // in C
         ret_val = usage / 10.0;
+        ESP_LOGVV(TAG, "Found register '0A5A' with '%d'->'%f'", usage, ret_val.value());
         break;
       }
       i++;
@@ -281,6 +306,7 @@ protected:
         usage = bcd_2_int(telegram, i, 2);
         // in C
         ret_val = usage / 10.0;
+        ESP_LOGVV(TAG, "Found register '0A5E' with '%d'->'%f'", usage, ret_val.value());
         break;
       }
       i++;
@@ -299,6 +325,7 @@ protected:
         i += 3;
         usage = bcd_2_int(telegram, i, 4);
         ret_val = usage / 100.0;
+        ESP_LOGVV(TAG, "Found register '0C943A' with '%d'->'%f'", usage, ret_val.value());
         break;
       }
       i++;
@@ -317,6 +344,7 @@ protected:
         i += 2;
         usage = bcd_2_int(telegram, i, 4);
         ret_val = usage / 1000.0;
+        ESP_LOGVV(TAG, "Found register '0C2B' with '%d'->'%f'", usage, ret_val.value());
         break;
       }
       i++;
@@ -335,6 +363,7 @@ protected:
         i += 2;
         usage = bcd_2_int(telegram, i, 3);
         ret_val = usage / 1000.0;
+        ESP_LOGVV(TAG, "Found register '0B3B' with '%d'->'%f'", usage, ret_val.value());
         break;
       }
       i++;
@@ -345,4 +374,5 @@ protected:
 private:
   Driver();
   std::string driver_type_;
+  std::string key_;
 };

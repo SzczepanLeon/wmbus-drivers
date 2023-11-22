@@ -12,7 +12,7 @@
 
 struct Mkradio3: Driver
 {
-  Mkradio3() : Driver(std::string("mkradio3")) {};
+  Mkradio3(std::string key = "") : Driver(std::string("mkradio3"), key) {};
   virtual esphome::optional<std::map<std::string, float>> get_values(std::vector<unsigned char> &telegram) override {
     std::map<std::string, float> ret_val{};
 

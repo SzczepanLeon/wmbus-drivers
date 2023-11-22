@@ -12,7 +12,7 @@
 
 struct Hydrodigit: Driver
 {
-  Hydrodigit() : Driver(std::string("hydrodigit")) {};
+  Hydrodigit(std::string key = "") : Driver(std::string("hydrodigit"), key) {};
   virtual esphome::optional<std::map<std::string, float>> get_values(std::vector<unsigned char> &telegram) override {
     std::map<std::string, float> ret_val{};
 

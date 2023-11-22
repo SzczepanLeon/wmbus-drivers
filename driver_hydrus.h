@@ -12,7 +12,7 @@
 
 struct Hydrus: Driver
 {
-  Hydrus() : Driver(std::string("hydrus")) {};
+  Hydrus(std::string key = "") : Driver(std::string("hydrus"), key) {};
   virtual esphome::optional<std::map<std::string, float>> get_values(std::vector<unsigned char> &telegram) override {
     std::map<std::string, float> ret_val{};
 

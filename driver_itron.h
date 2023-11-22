@@ -12,7 +12,7 @@
 
 struct Itron: Driver
 {
-  Itron() : Driver(std::string("itron")) {};
+  Itron(std::string key = "") : Driver(std::string("itron"), key) {};
   virtual esphome::optional<std::map<std::string, float>> get_values(std::vector<unsigned char> &telegram) override {
     std::map<std::string, float> ret_val{};
 

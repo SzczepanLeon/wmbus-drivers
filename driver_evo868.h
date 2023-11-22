@@ -12,7 +12,7 @@
 
 struct Evo868: Driver
 {
-  Evo868() : Driver(std::string("evo868")) {};
+  Evo868(std::string key = "") : Driver(std::string("evo868"), key) {};
   virtual esphome::optional<std::map<std::string, float>> get_values(std::vector<unsigned char> &telegram) override {
     std::map<std::string, float> ret_val{};
 

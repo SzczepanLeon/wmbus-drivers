@@ -12,7 +12,7 @@
 
 struct Sharky774: Driver
 {
-  Sharky774() : Driver(std::string("sharky774")) {};
+  Sharky774(std::string key = "") : Driver(std::string("sharky774"), key) {};
   virtual esphome::optional<std::map<std::string, float>> get_values(std::vector<unsigned char> &telegram) override {
     std::map<std::string, float> ret_val{};
 
