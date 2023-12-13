@@ -13,8 +13,8 @@
 struct Sharky774 : Driver
 {
   Sharky774(std::string key = "") : Driver(std::string("sharky774"), key){};
-  virtual esphome::optional<std::map<std::string, float>> get_values(std::vector<unsigned char> &telegram) override {
-    std::map<std::string, float> ret_val{};
+  virtual esphome::optional<std::map<std::string, double>> get_values(std::vector<unsigned char> &telegram) override {
+    std::map<std::string, double> ret_val{};
 
     add_to_map(ret_val, "total_energy_consumption_gj", this->get_total_energy_consumption_gj(telegram));
     add_to_map(ret_val, "power_kw", this->get_0C2B(telegram));
@@ -33,8 +33,8 @@ struct Sharky774 : Driver
   };
 
 private:
-  esphome::optional<float> get_total_energy_consumption_gj(std::vector<unsigned char> &telegram) {
-    esphome::optional<float> ret_val{};
+  esphome::optional<double> get_total_energy_consumption_gj(std::vector<unsigned char> &telegram) {
+    esphome::optional<double> ret_val{};
     uint32_t usage = 0;
     size_t i = 11;
     uint32_t total_register = 0x0C0E;

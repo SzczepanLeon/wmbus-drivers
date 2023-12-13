@@ -13,8 +13,8 @@
 struct Apator162: Driver
 {
   Apator162(std::string key = "") : Driver(std::string("apator162"), key) {};
-  virtual esphome::optional<std::map<std::string, float>> get_values(std::vector<unsigned char> &telegram) override {
-    std::map<std::string, float> ret_val{};
+  virtual esphome::optional<std::map<std::string, double>> get_values(std::vector<unsigned char> &telegram) override {
+    std::map<std::string, double> ret_val{};
 
     add_to_map(ret_val, "total_water_m3", this->get_total_water_m3(telegram));
 
@@ -27,8 +27,8 @@ struct Apator162: Driver
   };
 
 private:
-  esphome::optional<float> get_total_water_m3(std::vector<unsigned char> &telegram) {
-    esphome::optional<float> ret_val{};
+  esphome::optional<double> get_total_water_m3(std::vector<unsigned char> &telegram) {
+    esphome::optional<double> ret_val{};
     uint32_t usage = 0;
     size_t i = 25;
     if (telegram[10] == 0xb6) {

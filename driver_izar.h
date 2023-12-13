@@ -14,8 +14,8 @@
 struct Izar: Driver
 {
   Izar(std::string key = "") : Driver(std::string("izar"), key) {};
-  virtual esphome::optional<std::map<std::string, float>> get_values(std::vector<unsigned char> &telegram) override {
-    std::map<std::string, float> ret_val{};
+  virtual esphome::optional<std::map<std::string, double>> get_values(std::vector<unsigned char> &telegram) override {
+    std::map<std::string, double> ret_val{};
 
     uint8_t decrypted[64] = {0};
 
@@ -39,8 +39,8 @@ struct Izar: Driver
   };
 
 private:
-  esphome::optional<float> get_current_alarms(std::vector<unsigned char> &telegram) {
-    esphome::optional<float> ret_val{};
+  esphome::optional<double> get_current_alarms(std::vector<unsigned char> &telegram) {
+    esphome::optional<double> ret_val{};
     uint16_t alarms = 0;
     alarms |= (telegram[11] >> 7)       << 1; // general_alarm
     alarms |= (telegram[12] >> 7)       << 2; // leakage_currently
@@ -51,46 +51,46 @@ private:
     alarms |= (telegram[13] >> 4 & 0x1) << 7; // submarine
     alarms |= (telegram[13] >> 3 & 0x1) << 8; // sensor_fraud_currently
     alarms |= (telegram[13] >> 1 & 0x1) << 9; // mechanical_fraud_currently
-    ret_val = (float)alarms;
+    ret_val = (double)alarms;
     return ret_val;
   };
 
-  esphome::optional<float> get_previous_alarms(std::vector<unsigned char> &telegram) {
-    esphome::optional<float> ret_val{};
+  esphome::optional<double> get_previous_alarms(std::vector<unsigned char> &telegram) {
+    esphome::optional<double> ret_val{};
     uint16_t alarms = 0;
     alarms |= (telegram[12] >> 6 & 0x1) << 2; // leakage_previously
     alarms |= (telegram[13] >> 2 & 0x1) << 8; // sensor_fraud_previously
     alarms |= (telegram[13] & 0x1)      << 9; // mechanical_fraud_previously
-    ret_val = (float)alarms;
+    ret_val = (double)alarms;
     return ret_val;
   };
 
-  esphome::optional<float> get_remaining_battery_life_y(std::vector<unsigned char> &telegram) {
-    esphome::optional<float> ret_val{};
+  esphome::optional<double> get_remaining_battery_life_y(std::vector<unsigned char> &telegram) {
+    esphome::optional<double> ret_val{};
     ret_val = (telegram[12] & 0x1F) / 2.0;
     return ret_val;
   };
 
-  esphome::optional<float> get_transmit_period_s(std::vector<unsigned char> &telegram) {
-    esphome::optional<float> ret_val{};
+  esphome::optional<double> get_transmit_period_s(std::vector<unsigned char> &telegram) {
+    esphome::optional<double> ret_val{};
     ret_val = 1 << ((telegram[11] & 0x0F) + 2);
     return ret_val;
   };
 
-  esphome::optional<float> get_total_water_m3(uint8_t *decrypted) {
-    esphome::optional<float> ret_val{};
+  esphome::optional<double> get_total_water_m3(uint8_t *decrypted) {
+    esphome::optional<double> ret_val{};
     ret_val = (this->uintFromBytesLittleEndian(decrypted + 1)) / 1000.0;
     return ret_val;
   };
 
-  esphome::optional<float> get_last_month_total_water_m3(uint8_t *decrypted) {
-    esphome::optional<float> ret_val{};
+  esphome::optional<double> get_last_month_total_water_m3(uint8_t *decrypted) {
+    esphome::optional<double> ret_val{};
     ret_val = (this->uintFromBytesLittleEndian(decrypted + 5)) / 1000.0;
     return ret_val;
   };
 
-  esphome::optional<float> get_current_month_total_water_l(uint8_t *decrypted) {
-    esphome::optional<float> ret_val{};
+  esphome::optional<double> get_current_month_total_water_l(uint8_t *decrypted) {
+    esphome::optional<double> ret_val{};
     ret_val = this->uintFromBytesLittleEndian(decrypted + 1) - this->uintFromBytesLittleEndian(decrypted + 5);
     return ret_val;
   };

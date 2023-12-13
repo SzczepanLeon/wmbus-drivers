@@ -13,8 +13,8 @@
 struct Itron: Driver
 {
   Itron(std::string key = "") : Driver(std::string("itron"), key) {};
-  virtual esphome::optional<std::map<std::string, float>> get_values(std::vector<unsigned char> &telegram) override {
-    std::map<std::string, float> ret_val{};
+  virtual esphome::optional<std::map<std::string, double>> get_values(std::vector<unsigned char> &telegram) override {
+    std::map<std::string, double> ret_val{};
 
     add_to_map(ret_val, "total_water_m3", this->get_0C13(telegram));
     add_to_map(ret_val, "total_water_m3", this->get_0413(telegram));

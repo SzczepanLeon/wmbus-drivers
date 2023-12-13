@@ -13,8 +13,8 @@
 struct Vario451: Driver
 {
   Vario451(std::string key = "") : Driver(std::string("vario451"), key) {};
-  virtual esphome::optional<std::map<std::string, float>> get_values(std::vector<unsigned char> &telegram) override {
-    std::map<std::string, float> ret_val{};
+  virtual esphome::optional<std::map<std::string, double>> get_values(std::vector<unsigned char> &telegram) override {
+    std::map<std::string, double> ret_val{};
 
     add_to_map(ret_val, "total_heating_kwh", this->total_heating_kwh(telegram));
     add_to_map(ret_val, "total_heating_gj", this->total_heating_gj(telegram));
@@ -28,19 +28,19 @@ struct Vario451: Driver
   };
 
 private:
-  esphome::optional<float> total_heating_kwh(std::vector<unsigned char> &telegram) {
+  esphome::optional<double> total_heating_kwh(std::vector<unsigned char> &telegram) {
     // in kWh
-      float total_heating_in_kwh = get_total_heating_in_gj(telegram) * 277.777;
+      double total_heating_in_kwh = get_total_heating_in_gj(telegram) * 277.777;
       return esphome::make_optional(total_heating_in_kwh);
   }
 
-  esphome::optional<float> total_heating_gj(std::vector<unsigned char> &telegram) {
+  esphome::optional<double> total_heating_gj(std::vector<unsigned char> &telegram) {
     // in GJ
     return esphome::make_optional(get_total_heating_in_gj(telegram));
   }
 
-  float get_total_heating_in_gj(const std::vector<unsigned char> &telegram) const {
-    float usage = 0;
+  double get_total_heating_in_gj(const std::vector<unsigned char> &telegram) const {
+    double usage = 0;
     size_t i = 11;
 
     usage = ((((uint32_t)telegram[i+4] << 8) + (uint32_t)telegram[i+3]) / 1000.0) + 

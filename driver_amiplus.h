@@ -13,8 +13,8 @@
 struct Amiplus: Driver
 {
   Amiplus(std::string key = "") : Driver(std::string("amiplus"), key) {};
-  virtual esphome::optional<std::map<std::string, float>> get_values(std::vector<unsigned char> &telegram) override {
-    std::map<std::string, float> ret_val{};
+  virtual esphome::optional<std::map<std::string, double>> get_values(std::vector<unsigned char> &telegram) override {
+    std::map<std::string, double> ret_val{};
 
     add_to_map(ret_val, "total_energy_consumption_kwh", this->get_total_energy_consumption_kwh(telegram));
     add_to_map(ret_val, "current_power_consumption_kw", this->get_current_power_consumption_kw(telegram));
@@ -33,8 +33,8 @@ struct Amiplus: Driver
   };
 
 private:
-  esphome::optional<float> get_voltage_at_phase_v(uint8_t phase, std::vector<unsigned char> &telegram) {
-    esphome::optional<float> ret_val{};
+  esphome::optional<double> get_voltage_at_phase_v(uint8_t phase, std::vector<unsigned char> &telegram) {
+    esphome::optional<double> ret_val{};
     uint32_t usage = 0;
     size_t i = 11;
     uint32_t total_register = 0x0AFDC9FC;
@@ -54,8 +54,8 @@ private:
     return ret_val;
   };
 
-  esphome::optional<float> get_total_energy_consumption_kwh(std::vector<unsigned char> &telegram) {
-    esphome::optional<float> ret_val{};
+  esphome::optional<double> get_total_energy_consumption_kwh(std::vector<unsigned char> &telegram) {
+    esphome::optional<double> ret_val{};
     uint32_t usage = 0;
     size_t i = 11;
     uint32_t total_register = 0x0E03;
@@ -72,8 +72,8 @@ private:
     return ret_val;
   };
 
-  esphome::optional<float> get_current_power_consumption_kw(std::vector<unsigned char> &telegram) {
-    esphome::optional<float> ret_val{};
+  esphome::optional<double> get_current_power_consumption_kw(std::vector<unsigned char> &telegram) {
+    esphome::optional<double> ret_val{};
     uint32_t usage = 0;
     size_t i = 11;
     uint32_t total_register = 0x0B2B;
@@ -90,8 +90,8 @@ private:
     return ret_val;
   };
 
-  esphome::optional<float> get_total_energy_production_kwh(std::vector<unsigned char> &telegram) {
-    esphome::optional<float> ret_val{};
+  esphome::optional<double> get_total_energy_production_kwh(std::vector<unsigned char> &telegram) {
+    esphome::optional<double> ret_val{};
     uint32_t usage = 0;
     size_t i = 11;
     uint32_t total_register = 0x0E833C;
@@ -108,8 +108,8 @@ private:
     return ret_val;
   };
 
-  esphome::optional<float> get_current_power_production_kw(std::vector<unsigned char> &telegram) {
-    esphome::optional<float> ret_val{};
+  esphome::optional<double> get_current_power_production_kw(std::vector<unsigned char> &telegram) {
+    esphome::optional<double> ret_val{};
     uint32_t usage = 0;
     size_t i = 11;
     uint32_t total_register = 0x0BAB3C;

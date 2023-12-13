@@ -13,8 +13,8 @@
 struct ApatorEITN: Driver
 {
   ApatorEITN(std::string key = "") : Driver(std::string("apatoreitn"), key) {};
-  virtual esphome::optional<std::map<std::string, float>> get_values(std::vector<unsigned char> &telegram) override {
-    std::map<std::string, float> ret_val{};
+  virtual esphome::optional<std::map<std::string, double>> get_values(std::vector<unsigned char> &telegram) override {
+    std::map<std::string, double> ret_val{};
 
     add_to_map(ret_val, "current_hca", this->get_current_hca(telegram));
     add_to_map(ret_val, "previous_hca", this->get_previous_hca(telegram));
@@ -29,8 +29,8 @@ struct ApatorEITN: Driver
   };
 
 private:
-  esphome::optional<float> get_current_hca(std::vector<unsigned char> &telegram) {
-    esphome::optional<float> ret_val{};
+  esphome::optional<double> get_current_hca(std::vector<unsigned char> &telegram) {
+    esphome::optional<double> ret_val{};
     size_t i = 10;
     if (telegram[i] == 0xB6) {
       i += telegram[i+1] + 2;
@@ -41,8 +41,8 @@ private:
     return ret_val;
   };
 
-  esphome::optional<float> get_previous_hca(std::vector<unsigned char> &telegram) {
-    esphome::optional<float> ret_val{};
+  esphome::optional<double> get_previous_hca(std::vector<unsigned char> &telegram) {
+    esphome::optional<double> ret_val{};
     size_t i = 10;
     if (telegram[i] == 0xB6) {
       i += telegram[i+1] + 2;
@@ -53,8 +53,8 @@ private:
     return ret_val;
   };
 
-  esphome::optional<float> get_temp_room_avg_c(std::vector<unsigned char> &telegram) {
-    esphome::optional<float> ret_val{};
+  esphome::optional<double> get_temp_room_avg_c(std::vector<unsigned char> &telegram) {
+    esphome::optional<double> ret_val{};
     size_t i = 10;
     if (telegram[i] == 0xB6) {
       i += telegram[i+1] + 2;

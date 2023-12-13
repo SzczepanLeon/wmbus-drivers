@@ -13,8 +13,8 @@
 struct Compact5: Driver
 {
   Compact5(std::string key = "") : Driver(std::string("compact5"), key) {};
-  virtual esphome::optional<std::map<std::string, float>> get_values(std::vector<unsigned char> &telegram) override {
-    std::map<std::string, float> ret_val{};
+  virtual esphome::optional<std::map<std::string, double>> get_values(std::vector<unsigned char> &telegram) override {
+    std::map<std::string, double> ret_val{};
 
     add_to_map(ret_val, "current_heating_kwh", this->get_current_heating_kwh(telegram));
     add_to_map(ret_val, "previous_heating_kwh", this->get_previous_heating_kwh(telegram));
@@ -28,8 +28,8 @@ struct Compact5: Driver
   };
 
 private:
-  esphome::optional<float> get_current_heating_kwh(std::vector<unsigned char> &telegram) {
-    esphome::optional<float> ret_val{};
+  esphome::optional<double> get_current_heating_kwh(std::vector<unsigned char> &telegram) {
+    esphome::optional<double> ret_val{};
     size_t i = 11;
 
     ret_val = (((uint32_t)telegram[i+8] << 8) + (uint32_t)telegram[i+7]);
@@ -37,8 +37,8 @@ private:
     return ret_val;
   };
 
-  esphome::optional<float> get_previous_heating_kwh(std::vector<unsigned char> &telegram) {
-    esphome::optional<float> ret_val{};
+  esphome::optional<double> get_previous_heating_kwh(std::vector<unsigned char> &telegram) {
+    esphome::optional<double> ret_val{};
     size_t i = 11;
 
     ret_val = (((uint32_t)telegram[i+4] << 8) + (uint32_t)telegram[i+3]);

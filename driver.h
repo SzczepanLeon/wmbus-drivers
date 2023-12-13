@@ -15,7 +15,7 @@ struct Driver
   virtual ~Driver() = default; 
 
 public:
-  virtual esphome::optional<std::map<std::string, float>> get_values(std::vector<unsigned char> &telegram) = 0;
+  virtual esphome::optional<std::map<std::string, double>> get_values(std::vector<unsigned char> &telegram) = 0;
 
   std::string get_name() { return this->driver_type_; };
   std::string get_key() { return this->key_; };
@@ -28,9 +28,9 @@ protected:
              this->driver_type_.c_str(), this->key_.c_str());
   };
 
-  void add_to_map(std::map<std::string, float> &values,
+  void add_to_map(std::map<std::string, double> &values,
                   std::string name,
-                  esphome::optional<float> value) {
+                  esphome::optional<double> value) {
     if (value.has_value()) {
       ESP_LOGVV(TAG, "Value added to map");
       values[name] = *value;
@@ -55,8 +55,8 @@ protected:
   };
 
 // /
-  esphome::optional<float> get_0413(std::vector<unsigned char> &telegram) {
-    esphome::optional<float> ret_val{};
+  esphome::optional<double> get_0413(std::vector<unsigned char> &telegram) {
+    esphome::optional<double> ret_val{};
     uint32_t usage = 0;
     size_t i = 11;
     uint32_t total_register = 0x0413;
@@ -75,8 +75,8 @@ protected:
     return ret_val;
   };
 
-  esphome::optional<float> get_0C0E(std::vector<unsigned char> &telegram) {
-    esphome::optional<float> ret_val{};
+  esphome::optional<double> get_0C0E(std::vector<unsigned char> &telegram) {
+    esphome::optional<double> ret_val{};
     uint32_t usage = 0;
     size_t i = 11;
     uint32_t total_register = 0x0C0E;
@@ -95,8 +95,8 @@ protected:
     return ret_val;
   };
 
-  esphome::optional<float> get_0C0D(std::vector<unsigned char> &telegram) {
-    esphome::optional<float> ret_val{};
+  esphome::optional<double> get_0C0D(std::vector<unsigned char> &telegram) {
+    esphome::optional<double> ret_val{};
     uint32_t usage = 0;
     size_t i = 11;
     uint32_t total_register = 0x0C0D;
@@ -115,8 +115,8 @@ protected:
     return ret_val;
   };
 
-  esphome::optional<float> get_0C03(std::vector<unsigned char> &telegram) {
-    esphome::optional<float> ret_val{};
+  esphome::optional<double> get_0C03(std::vector<unsigned char> &telegram) {
+    esphome::optional<double> ret_val{};
     uint32_t usage = 0;
     size_t i = 11;
     uint32_t total_register = 0x0C03;
@@ -135,8 +135,8 @@ protected:
     return ret_val;
   };
 
-  esphome::optional<float> get_0C05(std::vector<unsigned char> &telegram) {
-    esphome::optional<float> ret_val{};
+  esphome::optional<double> get_0C05(std::vector<unsigned char> &telegram) {
+    esphome::optional<double> ret_val{};
     uint32_t usage = 0;
     size_t i = 11;
     uint32_t total_register = 0x0C05;
@@ -155,8 +155,8 @@ protected:
     return ret_val;
   };
 
-  esphome::optional<float> get_0C06(std::vector<unsigned char> &telegram) {
-    esphome::optional<float> ret_val{};
+  esphome::optional<double> get_0C06(std::vector<unsigned char> &telegram) {
+    esphome::optional<double> ret_val{};
     uint32_t usage = 0;
     size_t i = 11;
     uint32_t total_register = 0x0C06;
@@ -175,8 +175,8 @@ protected:
     return ret_val;
   };
 
-  esphome::optional<float> get_0C13(std::vector<unsigned char> &telegram) {
-    esphome::optional<float> ret_val{};
+  esphome::optional<double> get_0C13(std::vector<unsigned char> &telegram) {
+    esphome::optional<double> ret_val{};
     uint32_t usage = 0;
     size_t i = 11;
     uint32_t total_register = 0x0C13;
@@ -194,8 +194,8 @@ protected:
     return ret_val;
   };
 
-  esphome::optional<float> get_0C0A(std::vector<unsigned char> &telegram) {
-    esphome::optional<float> ret_val{};
+  esphome::optional<double> get_0C0A(std::vector<unsigned char> &telegram) {
+    esphome::optional<double> ret_val{};
     uint32_t usage = 0;
     size_t i = 11;
     uint32_t total_register = 0x0C0A;
@@ -214,8 +214,8 @@ protected:
     return ret_val;
   };
 
-  esphome::optional<float> get_0E0A(std::vector<unsigned char> &telegram) {
-    esphome::optional<float> ret_val{};
+  esphome::optional<double> get_0E0A(std::vector<unsigned char> &telegram) {
+    esphome::optional<double> ret_val{};
     uint32_t usage = 0;
     size_t i = 11;
     uint32_t total_register = 0x0E0A;
@@ -234,8 +234,8 @@ protected:
     return ret_val;
   };
 
-  esphome::optional<float> get_0E01(std::vector<unsigned char> &telegram) {
-    esphome::optional<float> ret_val{};
+  esphome::optional<double> get_0E01(std::vector<unsigned char> &telegram) {
+    esphome::optional<double> ret_val{};
     uint32_t usage = 0;
     size_t i = 11;
     uint32_t total_register = 0x0E01;
@@ -254,8 +254,8 @@ protected:
     return ret_val;
   };
 
-  esphome::optional<float> get_0A2D(std::vector<unsigned char> &telegram) {
-    esphome::optional<float> ret_val{};
+  esphome::optional<double> get_0A2D(std::vector<unsigned char> &telegram) {
+    esphome::optional<double> ret_val{};
     uint32_t usage = 0;
     size_t i = 11;
     uint32_t total_register = 0x0A2D;
@@ -274,8 +274,8 @@ protected:
     return ret_val;
   };
 
-  esphome::optional<float> get_0A5A(std::vector<unsigned char> &telegram) {
-    esphome::optional<float> ret_val{};
+  esphome::optional<double> get_0A5A(std::vector<unsigned char> &telegram) {
+    esphome::optional<double> ret_val{};
     uint32_t usage = 0;
     size_t i = 11;
     uint32_t total_register = 0x0A5A;
@@ -294,8 +294,8 @@ protected:
     return ret_val;
   };
 
-  esphome::optional<float> get_0A5E(std::vector<unsigned char> &telegram) {
-    esphome::optional<float> ret_val{};
+  esphome::optional<double> get_0A5E(std::vector<unsigned char> &telegram) {
+    esphome::optional<double> ret_val{};
     uint32_t usage = 0;
     size_t i = 11;
     uint32_t total_register = 0x0A5E;
@@ -314,8 +314,8 @@ protected:
     return ret_val;
   };
 
-  esphome::optional<float> get_0C943A(std::vector<unsigned char> &telegram) {
-    esphome::optional<float> ret_val{};
+  esphome::optional<double> get_0C943A(std::vector<unsigned char> &telegram) {
+    esphome::optional<double> ret_val{};
     uint32_t usage = 0;
     size_t i = 11;
     uint32_t total_register = 0x0C943A;
@@ -333,8 +333,8 @@ protected:
     return ret_val;
   };
 
-  esphome::optional<float> get_0C2B(std::vector<unsigned char> &telegram) {
-    esphome::optional<float> ret_val{};
+  esphome::optional<double> get_0C2B(std::vector<unsigned char> &telegram) {
+    esphome::optional<double> ret_val{};
     uint32_t usage = 0;
     size_t i = 11;
     uint32_t total_register = 0x0C2B;
@@ -353,8 +353,8 @@ protected:
     return ret_val;
   };
 
-  esphome::optional<float> get_0B3B(std::vector<unsigned char> &telegram) {
-    esphome::optional<float> ret_val{};
+  esphome::optional<double> get_0B3B(std::vector<unsigned char> &telegram) {
+    esphome::optional<double> ret_val{};
     uint32_t usage = 0;
     size_t i = 11;
     uint32_t total_register = 0x0B3B;
@@ -373,8 +373,8 @@ protected:
     return ret_val;
   };
 
-  esphome::optional<float> get_0B26(std::vector<unsigned char> &telegram) {
-    esphome::optional<float> ret_val{};
+  esphome::optional<double> get_0B26(std::vector<unsigned char> &telegram) {
+    esphome::optional<double> ret_val{};
     uint32_t usage = 0;
     size_t i = 11;
     uint32_t total_register = 0x0B26;
