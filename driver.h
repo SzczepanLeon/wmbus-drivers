@@ -107,7 +107,7 @@ protected:
         i += 2;
         usage = bcd_2_int(telegram, i, 4);
         // in kWh
-        ret_val = usage / 360000;
+        ret_val = usage / 360000.0;
         ESP_LOGVV(TAG, "Found register '0C09' with '%d'->'%f'", usage, ret_val.value());
         break;
       }
