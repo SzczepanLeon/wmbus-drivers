@@ -19,6 +19,7 @@ struct Hydrocalm3: Driver
     add_to_map(ret_val, "total_heating_kwh", this->get_0C0E(telegram));
     add_to_map(ret_val, "total_heating_kwh", this->get_0C03(telegram));
     add_to_map(ret_val, "total_heating_kwh", this->get_0C0A(telegram));
+    add_to_map(ret_val, "total_heating_kwh", this->get_0C09(telegram)); /* Hydrocal M4 kWh metering map value */ 
     add_to_map(ret_val, "total_water_m3", this->get_0C13(telegram));
 
     if (ret_val.size() > 0) {
