@@ -32,6 +32,6 @@ private:
 
       ret_val = (((uint32_t)telegram[i+6] << 32) + (uint32_t)telegram[i+5] << 16) + (uint32_t)telegram[i+4] << 8) + (uint32_t)telegram[i+3]);
 
-      return ret_val;
+      return ret_val / 100.0;
     };
 };
