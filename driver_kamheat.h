@@ -37,9 +37,9 @@ private:
       esphome::optional<float> ret_val{};
       size_t i = 19;
 
-      ret_val = (((uint32_t)telegram[i+6] << 32) + ((uint32_t)telegram[i+5] << 16) + ((uint32_t)telegram[i+4] << 8) + (uint32_t)telegram[i+3]);
+      ret_val = (((uint32_t)telegram[i+6] << 32) + ((uint32_t)telegram[i+5] << 16) + ((uint32_t)telegram[i+4] << 8) + (uint32_t)telegram[i+3]) / 100.0;
 
-      return ret_val / 100.0;
+      return ret_val ;
     };
 
   esphome::optional<float> get_forward_energy_m3c(std::vector<unsigned char> &telegram) {
@@ -64,9 +64,9 @@ private:
       esphome::optional<float> ret_val{};
       size_t i = 19;
 
-      ret_val = (((uint32_t)telegram[i+26] << 32) + ((uint32_t)telegram[i+25] << 16) + ((uint32_t)telegram[i+24] << 8) + (uint32_t)telegram[i+23]);
+      ret_val = (((uint32_t)telegram[i+26] << 32) + ((uint32_t)telegram[i+25] << 16) + ((uint32_t)telegram[i+24] << 8) + (uint32_t)telegram[i+23]) / 100.0;
 
-      return ret_val / 100.0 ;
+      return ret_val ;
     };
 
   esphome::optional<float> get_volume_flow_lh(std::vector<unsigned char> &telegram) {
@@ -82,18 +82,18 @@ private:
       esphome::optional<float> ret_val{};
       size_t i = 19;
 
-      ret_val = (((uint32_t)telegram[i+41] << 8) + (uint32_t)telegram[i+40]);
+      ret_val = (((uint32_t)telegram[i+41] << 8) + (uint32_t)telegram[i+40]) / 100.0 ;
 
-      return ret_val / 100.0 ;
+      return ret_val ;
     };
 
   esphome::optional<float> get_temperature_outlet_C(std::vector<unsigned char> &telegram) {
       esphome::optional<float> ret_val{};
       size_t i = 19;
 
-      ret_val = (((uint32_t)telegram[i+45] << 8) + (uint32_t)telegram[i+44]);
+      ret_val = (((uint32_t)telegram[i+45] << 8) + (uint32_t)telegram[i+44]) / 100.0;
 
-      return ret_val / 100.0 ;
+      return ret_val ;
     };
 
 };
