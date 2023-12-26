@@ -20,9 +20,9 @@ struct Kamheat: Driver
     add_to_map(ret_val, "total_forward_energy_m3c", this->get_forward_energy_m3c(telegram));
     add_to_map(ret_val, "total_return_energy_m3c", this->get_return_energy_m3c(telegram));
     add_to_map(ret_val, "total_volume_m3", this->get_total_volume_m3(telegram));
-    add_to_map(ret_val, "flow_m3h", this->get_volume_flow_m3h(telegram));
-    add_to_map(ret_val, "temperature_inlet_c", this->get_temperature_inlet_C(telegram));
-    add_to_map(ret_val, "temperature_outlet_c", this->get_temperature_outlet_C(telegram));
+    add_to_map(ret_val, "volume_flow_lh", this->get_volume_flow_lh(telegram));
+    add_to_map(ret_val, "flow_temperature_c", this->get_temperature_inlet_C(telegram));
+    add_to_map(ret_val, "return_temperature_c", this->get_temperature_outlet_C(telegram));
 
     if (ret_val.size() > 0) {
       return ret_val;
@@ -69,13 +69,13 @@ private:
       return ret_val / 100.0 ;
     };
 
-  esphome::optional<float> get_volume_flow_m3h(std::vector<unsigned char> &telegram) {
+  esphome::optional<float> get_volume_flow_lh(std::vector<unsigned char> &telegram) {
       esphome::optional<float> ret_val{};
       size_t i = 19;
 
       ret_val = (((uint32_t)telegram[i+37] << 32) + (uint32_t)telegram[i+36] << 16) + (uint32_t)telegram[i+35] << 8) + (uint32_t)telegram[i+34]);
 
-      return ret_val / 1000.0;
+      return ret_val ;
     };
 
   esphome::optional<float> get_temperature_inlet_C(std::vector<unsigned char> &telegram) {
