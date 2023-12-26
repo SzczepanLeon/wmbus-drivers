@@ -20,9 +20,9 @@ struct Kamheat: Driver
     add_to_map(ret_val, "total_forward_energy_m3c", this->get_forward_energy_m3c(telegram));
     add_to_map(ret_val, "total_return_energy_m3c", this->get_return_energy_m3c(telegram));
     add_to_map(ret_val, "total_volume_m3", this->get_total_volume_m3(telegram));
-    add_to_map(ret_val, "current_flow_m3h", this->get_volume_flow_m3h(telegram));
-    add_to_map(ret_val, "current_temperature_inlet_c", this->get_temperature_inlet_C(telegram));
-    add_to_map(ret_val, "current_temperature_outlet_c", this->get_temperature_outlet_C(telegram));
+    add_to_map(ret_val, "flow_m3h", this->get_volume_flow_m3h(telegram));
+    add_to_map(ret_val, "temperature_inlet_c", this->get_temperature_inlet_C(telegram));
+    add_to_map(ret_val, "temperature_outlet_c", this->get_temperature_outlet_C(telegram));
 
     if (ret_val.size() > 0) {
       return ret_val;
