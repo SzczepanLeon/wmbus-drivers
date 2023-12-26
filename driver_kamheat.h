@@ -34,4 +34,22 @@ private:
 
       return ret_val / 100.0;
     };
+
+  esphome::optional<float> get_forward_energy_m3(std::vector<unsigned char> &telegram) {
+      esphome::optional<float> ret_val{};
+      size_t i = 19;
+
+      ret_val = (((uint32_t)telegram[i+13] << 32) + (uint32_t)telegram[i+12] << 16) + (uint32_t)telegram[i+11] << 8) + (uint32_t)telegram[i+10]);
+
+      return ret_val ;
+    };
+
+  esphome::optional<float> get_return_energy_m3(std::vector<unsigned char> &telegram) {
+      esphome::optional<float> ret_val{};
+      size_t i = 19;
+
+      ret_val = (((uint32_t)telegram[i+20] << 32) + (uint32_t)telegram[i+19] << 16) + (uint32_t)telegram[i+18] << 8) + (uint32_t)telegram[i+17]);
+
+      return ret_val ;
+    };
 };
