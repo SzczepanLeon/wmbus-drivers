@@ -36,19 +36,29 @@ private:
   esphome::optional<float> get_current_heating_GJ(std::vector<unsigned char> &telegram) {
       esphome::optional<float> ret_val{};
       size_t i = 19;
-      if (telegram[19] == 0x79){ i+=2;}//short frame (L=31)
-              
-      ret_val = (((uint32_t)telegram[i+6] << 24) + ((uint32_t)telegram[i+5] << 16) + ((uint32_t)telegram[i+4] << 8) + (uint32_t)telegram[i+3]) / 100.0;
-      return ret_val ;
+      if ((telegram[0] == 0x31) && (telegram[19] == 0x79)){//short frame (L=0x31) and 0x79 tpl-ci-field (EN 13757-3 Application Layer with Compact frame (no tplh)) 
+        i+=2;
+        ret_val = (((uint32_t)telegram[i+6] << 24) + ((uint32_t)telegram[i+5] << 16) + ((uint32_t)telegram[i+4] << 8) + (uint32_t)telegram[i+3]) / 100.0;
+        return ret_val ;
+      }
+      else if ((telegram[0] == 0x40) && (telegram[19] == 0x78)){//longer frame (L=0x40) and 0x78 tpl-ci-field     
+        ret_val = (((uint32_t)telegram[i+6] << 24) + ((uint32_t)telegram[i+5] << 16) + ((uint32_t)telegram[i+4] << 8) + (uint32_t)telegram[i+3]) / 100.0;
+        return ret_val ;
+      }
+      else{
+        return {};
+      }
     };
 
   esphome::optional<float> get_forward_energy_m3c(std::vector<unsigned char> &telegram) {
       esphome::optional<float> ret_val{};
       size_t i = 19;
       if (telegram[19] == 0x79){ return {};}//short frame (L=31)
-      ret_val = (((uint32_t)telegram[i+13] << 24) + ((uint32_t)telegram[i+12] << 16) + ((uint32_t)telegram[i+11] << 8) + (uint32_t)telegram[i+10]);
-
-      return ret_val ;
+      else if ((telegram[0] == 0x40) && (telegram[19] == 0x78)){//longer frame (L=0x40) and 0x78 tpl-ci-field      
+        ret_val = (((uint32_t)telegram[i+13] << 24) + ((uint32_t)telegram[i+12] << 16) + ((uint32_t)telegram[i+11] << 8) + (uint32_t)telegram[i+10]);
+        return ret_val ;
+      }
+      else { return {};}
     };
 
   esphome::optional<float> get_return_energy_m3c(std::vector<unsigned char> &telegram) {
