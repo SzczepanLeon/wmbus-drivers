@@ -53,8 +53,7 @@ private:
   esphome::optional<float> get_forward_energy_m3c(std::vector<unsigned char> &telegram) {
       esphome::optional<float> ret_val{};
       size_t i = 19;
-      if (telegram[19] == 0x79){ return {};}//short frame (L=31)
-      else if ((telegram[0] == 0x40) && (telegram[19] == 0x78)){//longer frame (L=0x40) and 0x78 tpl-ci-field      
+      if ((telegram[0] == 0x40) && (telegram[19] == 0x78)){//longer frame (L=0x40) and 0x78 tpl-ci-field      
         ret_val = (((uint32_t)telegram[i+13] << 24) + ((uint32_t)telegram[i+12] << 16) + ((uint32_t)telegram[i+11] << 8) + (uint32_t)telegram[i+10]);
         return ret_val ;
       }
@@ -64,46 +63,70 @@ private:
   esphome::optional<float> get_return_energy_m3c(std::vector<unsigned char> &telegram) {
       esphome::optional<float> ret_val{};
       size_t i = 19;
-      if (telegram[19] == 0x79){ return {};}//short frame (L=31)
-      ret_val = (((uint32_t)telegram[i+20] << 24) + ((uint32_t)telegram[i+19] << 16) + ((uint32_t)telegram[i+18] << 8) + (uint32_t)telegram[i+17]);
-
-      return ret_val ;
+      if ((telegram[0] == 0x40) && (telegram[19] == 0x78)){//longer frame (L=0x40) and 0x78 tpl-ci-field   
+        ret_val = (((uint32_t)telegram[i+20] << 24) + ((uint32_t)telegram[i+19] << 16) + ((uint32_t)telegram[i+18] << 8) + (uint32_t)telegram[i+17]);
+        return ret_val ;
+      }
+      else {return {};}
     };
 
   esphome::optional<float> get_total_volume_m3(std::vector<unsigned char> &telegram) {
       esphome::optional<float> ret_val{};
       size_t i = 19;
-      if (telegram[19] == 0x79){ i-=6;}//short frame (L=31)
-      ret_val = (((uint32_t)telegram[i+26] << 24) + ((uint32_t)telegram[i+25] << 16) + ((uint32_t)telegram[i+24] << 8) + (uint32_t)telegram[i+23]) / 100.0;
-
-      return ret_val ;
+      if ((telegram[0] == 0x31) && (telegram[19] == 0x79)){//short frame (L=0x31) and 0x79 tpl-ci-field (EN 13757-3 Application Layer with Compact frame (no tplh))
+        i-=6;
+        ret_val = (((uint32_t)telegram[i+26] << 24) + ((uint32_t)telegram[i+25] << 16) + ((uint32_t)telegram[i+24] << 8) + (uint32_t)telegram[i+23]) / 100.0;
+        return ret_val;
+      }
+      else if ((telegram[0] == 0x40) && (telegram[19] == 0x78)){//longer frame (L=0x40) and 0x78 tpl-ci-field
+        ret_val = (((uint32_t)telegram[i+26] << 24) + ((uint32_t)telegram[i+25] << 16) + ((uint32_t)telegram[i+24] << 8) + (uint32_t)telegram[i+23]) / 100.0;
+        return ret_val;
+      }
+      else {return {};}
     };
 
   esphome::optional<float> get_volume_flow_lh(std::vector<unsigned char> &telegram) {
       esphome::optional<float> ret_val{};
       size_t i = 19;
-      if (telegram[19] == 0x79){ i-=11;}//short frame (L=31)
-      ret_val = (((uint32_t)telegram[i+37] << 24) + ((uint32_t)telegram[i+36] << 16) + ((uint32_t)telegram[i+35] << 8) + (uint32_t)telegram[i+34]);
-
-      return ret_val ;
+      if ((telegram[0] == 0x31) && (telegram[19] == 0x79)){//short frame (L=0x31) and 0x79 tpl-ci-field (EN 13757-3 Application Layer with Compact frame (no tplh))
+        i-=11;
+        ret_val = (((uint32_t)telegram[i+37] << 24) + ((uint32_t)telegram[i+36] << 16) + ((uint32_t)telegram[i+35] << 8) + (uint32_t)telegram[i+34]);
+        return ret_val;
+      }
+      else if ((telegram[0] == 0x40) && (telegram[19] == 0x78)){//longer frame (L=0x40) and 0x78 tpl-ci-field
+        ret_val = (((uint32_t)telegram[i+37] << 24) + ((uint32_t)telegram[i+36] << 16) + ((uint32_t)telegram[i+35] << 8) + (uint32_t)telegram[i+34]);
+        return ret_val;
+      }
+      else {return {};}
     };
 
   esphome::optional<float> get_temperature_inlet_C(std::vector<unsigned char> &telegram) {
       esphome::optional<float> ret_val{};
       size_t i = 19;
-      if (telegram[19] == 0x79){ i-=13;}//short frame (L=31)
-      ret_val = (((uint32_t)telegram[i+41] << 8) + (uint32_t)telegram[i+40]) / 100.0 ;
-
-      return ret_val ;
+      if ((telegram[0] == 0x31) && (telegram[19] == 0x79)){//short frame (L=0x31) and 0x79 tpl-ci-field (EN 13757-3 Application Layer with Compact frame (no tplh))
+        i-=13;
+        ret_val = (((uint32_t)telegram[i+41] << 8) + (uint32_t)telegram[i+40]) / 100.0 ;
+        return ret_val;
+      }
+      else if ((telegram[0] == 0x40) && (telegram[19] == 0x78)){//longer frame (L=0x40) and 0x78 tpl-ci-field
+        ret_val = (((uint32_t)telegram[i+41] << 8) + (uint32_t)telegram[i+40]) / 100.0 ;
+        return ret_val;
+      }
+      else {return {};}    
     };
 
   esphome::optional<float> get_temperature_outlet_C(std::vector<unsigned char> &telegram) {
       esphome::optional<float> ret_val{};
       size_t i = 19;
-      if (telegram[19] == 0x79){ i-=15;}//short frame (L=31)
-      ret_val = (((uint32_t)telegram[i+45] << 8) + (uint32_t)telegram[i+44]) / 100.0;
-
-      return ret_val ;
+      if ((telegram[0] == 0x31) && (telegram[19] == 0x79)){//short frame (L=0x31) and 0x79 tpl-ci-field (EN 13757-3 Application Layer with Compact frame (no tplh))
+        i-=15;
+        ret_val = (((uint32_t)telegram[i+45] << 8) + (uint32_t)telegram[i+44]) / 100.0;
+        return ret_val;
+      }
+      else if ((telegram[0] == 0x40) && (telegram[19] == 0x78)){//longer frame (L=0x40) and 0x78 tpl-ci-field
+        ret_val = (((uint32_t)telegram[i+45] << 8) + (uint32_t)telegram[i+44]) / 100.0;
+        return ret_val;
+      }
+      else {return {};}
     };
-
 };
