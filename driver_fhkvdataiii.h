@@ -18,7 +18,7 @@ struct FhkvdataIII: Driver
 
     add_to_map(ret_val, "current_hca", this->get_current_hca(telegram));
     add_to_map(ret_val, "previous_hca", this->get_previous_hca(telegram));
-    add_to_map(ret_val, "temp_room_c", this-get_temp_room_c(telegram));
+    add_to_map(ret_val, "temp_room_c", this->get_temp_room_c(telegram));
 
     if (ret_val.size() > 0) {
       return ret_val;
