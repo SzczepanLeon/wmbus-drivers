@@ -18,6 +18,7 @@ struct FhkvdataIII: Driver
 
     add_to_map(ret_val, "current_hca", this->get_current_hca(telegram));
     add_to_map(ret_val, "previous_hca", this->get_previous_hca(telegram));
+    add_to_map(ret_val, "temp_room_c", this-get_temp_room_c(telegram));
 
     if (ret_val.size() > 0) {
       return ret_val;
@@ -42,6 +43,18 @@ private:
     size_t i = 11;
 
     ret_val = (((uint32_t)telegram[i+4] << 8) + (uint32_t)telegram[i+3]);
+
+    return ret_val;
+  };
+
+  esphome::optional<double> get_temp_room_c(std::vector<unsigned char> &telegram) {
+    esphome::optional<double> ret_val{};
+    size_t i = 20;
+    if((uint32_t)telegram[8] == 0x94) { // dll_version
+      i++;
+    }
+
+    ret_val = (((uint32_t)telegram[i+1] << 8) + (uint32_t)telegram[i])/100.0;
 
     return ret_val;
   };
