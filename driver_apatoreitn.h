@@ -32,8 +32,14 @@ private:
   esphome::optional<double> get_current_hca(std::vector<unsigned char> &telegram) {
     esphome::optional<double> ret_val{};
     size_t i = 10;
+
     if (telegram[i] == 0xB6) {
       i += telegram[i+1] + 2;
+    }
+
+    // experimental Apator E-ITN 40
+    if ((telegram[8] == 0x09) && (telegram.size() > 40)) {
+      i = 43;
     }
 
     ret_val = (((uint32_t)telegram[i+9] << 8) + (uint32_t)telegram[i+8]);
