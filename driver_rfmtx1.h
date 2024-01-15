@@ -47,6 +47,9 @@ private:
         ESP_LOGVV(TAG, "[%d] d_t = %d, total = %f, mul = %f", i, bcd_2_bin(decoded_total[i]), total, mul);
       }
 
+      uint32_t myTotal = bcd_2_int(decoded_total, 2, 4);
+      ESP_LOGVV(TAG, "total[%d] = %f", myTotal, myTotal/1000.0);
+
       ret_val = total / 1000.0;
     }
 
