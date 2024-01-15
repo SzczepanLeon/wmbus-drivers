@@ -39,16 +39,16 @@ private:
         ESP_LOGVV(TAG, "decoded_total[%d] = %d", i, decoded_total[i]);
       }
 
-      double total = 0;
+      double totalX = 0;
       double mul = 1;
       for (int i = 2; i < 6; ++i) {
-        total += mul * bcd_2_bin(decoded_total[i]);
+        totalX += mul * bcd_2_bin(decoded_total[i]);
         mul *= 100;
-        ESP_LOGVV(TAG, "[%d] d_t = %d, total = %f, mul = %f", i, bcd_2_bin(decoded_total[i]), total, mul);
+        ESP_LOGVV(TAG, "[%d] d_t = %d, totalX = %d, mul = %f", i, bcd_2_bin(decoded_total[i]), totalX, mul);
       }
 
-      uint32_t myTotal = bcd_2_int(decoded_total, 2, 4);
-      ESP_LOGVV(TAG, "total[%d] = %f", myTotal, myTotal/1000.0);
+      uint32_t total = bcd_2_int(std::vector<unsigned char>(decoded_total + 2, decoded_total + 6), 0, 4);
+      ESP_LOGVV(TAG, "total[%d] = %f", total, total/1000.0);
 
       ret_val = total / 1000.0;
     }
