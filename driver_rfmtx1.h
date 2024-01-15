@@ -29,13 +29,14 @@ struct Rfmtx1: Driver
 private:
   esphome::optional<double> get_total_water_m3(std::vector<unsigned char> &telegram) {
     esphome::optional<double> ret_val{};
-    size_t i = 15;
-    uint32_t tpl_cfg = (((uint32_t)telegram[13] << 8) | ((uint32_t)telegram[14]));
+    uint32_t tpl_cfg = (((uint32_t)telegram[14] << 8) | ((uint32_t)telegram[13]));
+    ESP_LOGVV(TAG, "tpl_cfg = [0x%04X] [13] = 0x%02X [14] = 0x%02X", tpl_cfg, telegram[13], telegram[14]);
     if (tpl_cfg == 0x1006) {
       unsigned char decoded_total[6];
 
       for (int i = 0; i < 6; ++i) {
         decoded_total[i] = (unsigned char)(telegram[0xf + i] ^ telegram[0xb] ^ decode_vectors_[telegram[0xb] & 0x0f][i]);
+        ESP_LOGVV(TAG, "decoded_total[%d] = %d", i, decoded_total[i]);
       }
 
       double total = 0;
@@ -43,6 +44,7 @@ private:
       for (int i = 2; i < 6; ++i) {
         total += mul * bcd_2_bin(decoded_total[i]);
         mul *= 100;
+        ESP_LOGVV(TAG, "[%d] d_t = %d, total = %f, mul = %f", i, bcd_2_bin(decoded_total[i]), total, mul);
       }
 
       ret_val = total / 1000.0;
