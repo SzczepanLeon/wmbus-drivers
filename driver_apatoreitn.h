@@ -38,7 +38,7 @@ private:
     }
 
     // experimental Apator E-ITN 40
-    if ((telegram[8] == 0x09) && (telegram.size() > 40)) {
+    if ((telegram[8] == 0x09) && (telegram.size() > 52)) {
       i = 43;
     }
 
@@ -54,6 +54,11 @@ private:
       i += telegram[i+1] + 2;
     }
 
+    // experimental Apator E-ITN 40
+    if ((telegram[8] == 0x09) && (telegram.size() > 52)) {
+      i = 43;
+    }
+
     ret_val = (((uint32_t)telegram[i+5] << 8) + (uint32_t)telegram[i+4]);
 
     return ret_val;
@@ -64,6 +69,11 @@ private:
     size_t i = 10;
     if (telegram[i] == 0xB6) {
       i += telegram[i+1] + 2;
+    }
+
+    // experimental Apator E-ITN 40
+    if ((telegram[8] == 0x09) && (telegram.size() > 52)) {
+      i = 43;
     }
 
     ret_val = (((uint32_t)telegram[i+15]) + ((uint32_t)telegram[i+14])/256.0);
