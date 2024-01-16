@@ -30,7 +30,7 @@ private:
   esphome::optional<double> get_total_water_m3(std::vector<unsigned char> &telegram) {
     esphome::optional<double> ret_val{};
     uint32_t tpl_cfg = (((uint32_t)telegram[14] << 8) | ((uint32_t)telegram[13]));
-    ESP_LOGVV(TAG, "tpl_cfg = [0x%04X] [13] = 0x%02X [14] = 0x%02X", tpl_cfg, telegram[13], telegram[14]);
+    ESP_LOGVV(TAG, "tpl_cfg = [0x%04X]", tpl_cfg);
     if (tpl_cfg == 0x1006) {
       unsigned char decoded_total[6];
 
@@ -39,16 +39,7 @@ private:
         ESP_LOGVV(TAG, "decoded_total[%d] = %d", i, decoded_total[i]);
       }
 
-      double totalX = 0;
-      double mul = 1;
-      for (int i = 2; i < 6; ++i) {
-        totalX += mul * bcd_2_bin(decoded_total[i]);
-        mul *= 100;
-        ESP_LOGVV(TAG, "[%d] d_t = %d, totalX = %d, mul = %f", i, bcd_2_bin(decoded_total[i]), totalX, mul);
-      }
-
       uint32_t total = bcd_2_int(std::vector<unsigned char>(decoded_total + 2, decoded_total + 6), 0, 4);
-      ESP_LOGVV(TAG, "total[%d] = %f", total, total/1000.0);
 
       ret_val = total / 1000.0;
     }

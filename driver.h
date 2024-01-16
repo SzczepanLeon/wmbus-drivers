@@ -37,11 +37,6 @@ protected:
     }
   };
 
-  unsigned char bcd_2_bin(unsigned char bcd) {
-    ESP_LOGVV(TAG, "Converting BCD to BIN");
-    return ((bcd & 15) + (bcd >> 4) * 10);
-  };
-
   uint32_t bcd_2_int(const std::vector<unsigned char> &telegram, size_t start, size_t length) {
     ESP_LOGVV(TAG, "Converting BCD to INT");
     uint32_t result{0};
