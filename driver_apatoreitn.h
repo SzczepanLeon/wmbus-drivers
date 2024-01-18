@@ -18,6 +18,8 @@ struct ApatorEITN: Driver
 
     add_to_map(ret_val, "current_hca", this->get_current_hca(telegram));
     add_to_map(ret_val, "previous_hca", this->get_previous_hca(telegram));
+    add_to_map(ret_val, "current_m_hca", this->get_current_m_hca(telegram));
+    add_to_map(ret_val, "previous_m_hca", this->get_previous_m_hca(telegram));
     add_to_map(ret_val, "temp_room_avg_c", this->get_temp_room_avg_c(telegram));
 
     if (ret_val.size() > 0) {
@@ -56,10 +58,32 @@ private:
 
     // experimental Apator E-ITN 40
     if ((telegram[8] == 0x09) && (telegram.size() > 52)) {
-      i = 43;
+      i = 49;
     }
 
     ret_val = (((uint32_t)telegram[i+5] << 8) + (uint32_t)telegram[i+4]);
+
+    return ret_val;
+  };
+
+  esphome::optional<double> get_current_m_hca(std::vector<unsigned char> &telegram) {
+    esphome::optional<double> ret_val{};
+
+    // experimental Apator E-ITN 40
+    if ((telegram[8] == 0x09) && (telegram.size() > 52)) {
+      ret_val = (((uint32_t)telegram[20] << 8) + (uint32_t)telegram[19]);
+    }
+
+    return ret_val;
+  };
+
+  esphome::optional<double> get_previous_m_hca(std::vector<unsigned char> &telegram) {
+    esphome::optional<double> ret_val{};
+
+    // experimental Apator E-ITN 40
+    if ((telegram[8] == 0x09) && (telegram.size() > 52)) {
+      ret_val = (((uint32_t)telegram[22] << 8) + (uint32_t)telegram[21]);
+    }
 
     return ret_val;
   };
@@ -69,11 +93,6 @@ private:
     size_t i = 10;
     if (telegram[i] == 0xB6) {
       i += telegram[i+1] + 2;
-    }
-
-    // experimental Apator E-ITN 40
-    if ((telegram[8] == 0x09) && (telegram.size() > 52)) {
-      i = 43;
     }
 
     ret_val = (((uint32_t)telegram[i+15]) + ((uint32_t)telegram[i+14])/256.0);
