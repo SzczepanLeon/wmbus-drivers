@@ -67,7 +67,7 @@ private:
   esphome::optional<float> get_total_volume_m3(std::vector<unsigned char> &telegram) {
     esphome::optional<float> ret_val{};
     size_t i = 19;
-    if ((telegram[0] == 0x31) && (telegram[19] == 0x79)){/  /short frame (L=0x31) and 0x79 tpl-ci-field (EN 13757-3 Application Layer with Compact frame (no tplh))
+    if ((telegram[0] == 0x31) && (telegram[19] == 0x79)){  //short frame (L=0x31) and 0x79 tpl-ci-field (EN 13757-3 Application Layer with Compact frame (no tplh))
       i-=6;
       ret_val = (((uint32_t)telegram[i+26] << 24) + ((uint32_t)telegram[i+25] << 16) + ((uint32_t)telegram[i+24] << 8) + (uint32_t)telegram[i+23]) / 100.0;
     }
