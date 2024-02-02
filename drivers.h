@@ -17,6 +17,7 @@
 #include "driver_iperl.h"
 #include "driver_itron.h"
 #include "driver_izar.h"
+#include "driver_kamheat.h"
 #include "driver_mkradio3.h"
 #include "driver_mkradio4.h"
 #include "driver_qheat.h"
