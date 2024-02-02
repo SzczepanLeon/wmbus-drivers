@@ -12,7 +12,7 @@
 
 struct Multical21: Driver
 {
-  Iperl(std::string key = "") : Driver(std::string("multical21"), key) {};
+  Multical21(std::string key = "") : Driver(std::string("multical21"), key) {};
   virtual esphome::optional<std::map<std::string, double>> get_values(std::vector<unsigned char> &telegram) override {
     std::map<std::string, double> ret_val{};
 
