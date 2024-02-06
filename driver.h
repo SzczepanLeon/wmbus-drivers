@@ -480,7 +480,6 @@ protected:
 
   esphome::optional<double> get_04FF23(std::vector<unsigned char> &telegram) {
     esphome::optional<double> ret_val{};
-    uint32_t usage = 0;
     size_t i = 11;
     uint32_t status_register = 0x04FF23;
     while (i < telegram.size()) {
@@ -489,8 +488,8 @@ protected:
         i += 3;
         uint32_t alarms = ((uint32_t)telegram[i+3] << 24) | ((uint32_t)telegram[i+2] << 16) |
                           ((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]);
-        ret_val = (double)usage;
-        ESP_LOGV(TAG, "Found register '04FF23' with '%04X'", alarms);
+        ret_val = (double)alarms;
+        ESP_LOGV(TAG, "Found register '04FF23' with '%08X'", alarms);
         break;
       }
       i++;
