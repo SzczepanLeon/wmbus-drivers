@@ -36,13 +36,14 @@ struct Flowiq2200: Driver
 private:
   esphome::optional<double> get_total_water_m3(std::vector<unsigned char> &telegram) {
     esphome::optional<double> ret_val{};
+    uint8_t l_field = telegram[0];
     uint8_t tpl_ci_field = telegram[19];
     if (tpl_ci_field == 0x78) {
-      ret_val = this->get_0413(telegram);  
+      ret_val = this->get_0413(telegram);
     }
-    else if (tpl_ci_field == 0x79) {
+    else if ((tpl_ci_field == 0x79) && (l_field > 49)) {
       uint32_t usage{0};
-      uint8_t i = 29;
+      uint8_t i = 46;
       usage = (((uint32_t)telegram[i+3] << 24) | ((uint32_t)telegram[i+2] << 16) |
                ((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]));
       ret_val = usage / 1000.0;
@@ -52,13 +53,14 @@ private:
 
   esphome::optional<double> get_target_water_m3(std::vector<unsigned char> &telegram) {
     esphome::optional<double> ret_val{};
+    uint8_t l_field = telegram[0];
     uint8_t tpl_ci_field = telegram[19];
     if (tpl_ci_field == 0x78) {
-      ret_val = this->get_4413(telegram);  
+      ret_val = this->get_4413(telegram);
     }
-    else if (tpl_ci_field == 0x79) {
+    else if ((tpl_ci_field == 0x79) && (l_field > 49)) {
       uint32_t usage{0};
-      uint8_t i = 11;
+      uint8_t i = 28;
       usage = (((uint32_t)telegram[i+3] << 24) | ((uint32_t)telegram[i+2] << 16) |
                ((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]));
       ret_val = usage / 1000.0;
@@ -68,11 +70,12 @@ private:
 
   esphome::optional<double> get_status(std::vector<unsigned char> &telegram) {
     esphome::optional<double> ret_val{};
+    uint8_t l_field = telegram[0];
     uint8_t tpl_ci_field = telegram[19];
     if (tpl_ci_field == 0x78) {
       ret_val = this->get_04FF23(telegram);  
     }
-    else if (tpl_ci_field == 0x79) {
+    else if ((tpl_ci_field == 0x79) && (l_field > 49)) {
       // ToDo
     }
     return ret_val;

@@ -16,14 +16,18 @@ struct Kamheat: Driver
   virtual esphome::optional<std::map<std::string, double>> get_values(std::vector<unsigned char> &telegram) override {
     std::map<std::string, double> ret_val{};
 
-    // add_to_map(ret_val, "total_energy_consumption_kwh", this->get_0406(telegram));
-    // //  total_energy_consumption_gj -- powerKkw??
+    add_to_map(ret_val, "total_energy_consumption_kwh", this->get_0406(telegram));
+    add_to_map(ret_val, "total_energy_consumption_kwh", this->get_040F(telegram));
+    add_to_map(ret_val, "total_energy_consumption_kwh", this->get_total_energy_consumption_kwh(telegram));
     // add_to_map(ret_val, "total_forward_energy_m3c", this->get_04FF07(telegram));
     // add_to_map(ret_val, "total_return_energy_m3c", this->get_04FF08(telegram));
     // add_to_map(ret_val, "total_volume_m3", this->get_0414(telegram));
     // add_to_map(ret_val, "volume_flow_lh", this->get_043B(telegram)); // obliczyc w litrach
+    // add_to_map(ret_val, "volume_flow_lh", this->get_volume_flow_lh(telegram)); // obliczyc w litrach
     // add_to_map(ret_val, "flow_temperature_c", this->get_0259(telegram));
+    // add_to_map(ret_val, "flow_temperature_c", this->get_flow_temperature_c(telegram));
     // add_to_map(ret_val, "return_temperature_c", this->get_025D(telegram));
+    // add_to_map(ret_val, "return_temperature_c", this->get_return_temperature_c(telegram));
 
     if (ret_val.size() > 0) {
       return ret_val;
@@ -34,6 +38,21 @@ struct Kamheat: Driver
   };
 
 private:
+  esphome::optional<double> get_total_energy_consumption_kwh(std::vector<unsigned char> &telegram) {
+    esphome::optional<double> ret_val{};
+    uint8_t tpl_ci_field = telegram[19];
+    if (tpl_ci_field == 0x79) {
+      uint32_t usage{0};
+      uint8_t i = 29;
+      usage = (((uint32_t)telegram[i+3] << 24) | ((uint32_t)telegram[i+2] << 16) |
+               ((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]));
+      // in kWh
+      ret_val = usage / 27777.0;
+      ESP_LOGVV(TAG, "tpl_ci_field '0x79': '%d'->'%f'", usage, ret_val.value());
+    }
+    return ret_val;
+  };
+
 //   esphome::optional<double> get_forward_energy_m3c(std::vector<unsigned char> &telegram) {
 //     esphome::optional<double> ret_val{};
 //     size_t i = 19;
