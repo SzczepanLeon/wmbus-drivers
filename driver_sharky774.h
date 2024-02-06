@@ -17,6 +17,7 @@ struct Sharky774 : Driver
     std::map<std::string, double> ret_val{};
 
     add_to_map(ret_val, "total_energy_consumption_gj", this->get_total_energy_consumption_gj(telegram));
+    add_to_map(ret_val, "total_energy_consumption_kwh", this->get_0C0E(telegram));
     add_to_map(ret_val, "power_kw", this->get_0C2B(telegram));
     add_to_map(ret_val, "total_volume_m3", this->get_0C13(telegram));
     add_to_map(ret_val, "volume_flow_lh", this->get_0B3B(telegram));
@@ -44,6 +45,7 @@ private:
         i += 2;
         usage = bcd_2_int(telegram, i, 4);
         ret_val = usage / 1000.0;
+        ESP_LOGVV(TAG, "Found register '0C0E' with '%d'->'%f'", usage, ret_val.value());
         break;
       }
       i++;

@@ -34,6 +34,7 @@ private:
     size_t i = 11;
 
     ret_val = (((uint32_t)telegram[i+8] << 8) + (uint32_t)telegram[i+7]);
+    ESP_LOGVV(TAG, "Found current_hca with '%f'", ret_val.value());
 
     return ret_val;
   };
@@ -43,6 +44,7 @@ private:
     size_t i = 11;
 
     ret_val = (((uint32_t)telegram[i+4] << 8) + (uint32_t)telegram[i+3]);
+    ESP_LOGVV(TAG, "Found previous_hca with '%f'", ret_val.value());
 
     return ret_val;
   };
@@ -55,6 +57,7 @@ private:
     }
 
     ret_val = (((uint32_t)telegram[i+1] << 8) + (uint32_t)telegram[i])/100.0;
+    ESP_LOGVV(TAG, "Found temp_room with '%f'", ret_val.value());
 
     return ret_val;
   };

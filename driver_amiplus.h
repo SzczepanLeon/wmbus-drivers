@@ -46,6 +46,7 @@ private:
         if ((uint8_t)telegram[i-1] == phase) {
           usage = bcd_2_int(telegram, i, 2);
           ret_val = usage / 1.0;
+          ESP_LOGVV(TAG, "Found register '0AFDC9FC%d' with '%d'->'%f'", phase, usage, ret_val.value());
           break;
         }
       }
@@ -65,6 +66,7 @@ private:
         i += 2;
         usage = bcd_2_int(telegram, i, 6);
         ret_val = usage / 1000.0;
+        ESP_LOGVV(TAG, "Found register '0E03' with '%d'->'%f'", usage, ret_val.value());
         break;
       }
       i++;
@@ -83,6 +85,7 @@ private:
         i += 2;
         usage = bcd_2_int(telegram, i, 3);
         ret_val = usage / 1000.0;
+        ESP_LOGVV(TAG, "Found register '0B2B' with '%d'->'%f'", usage, ret_val.value());
         break;
       }
       i++;
@@ -101,6 +104,7 @@ private:
         i += 3;
         usage = bcd_2_int(telegram, i, 6);
         ret_val = usage / 1000.0;
+        ESP_LOGVV(TAG, "Found register '0E833C' with '%d'->'%f'", usage, ret_val.value());
         break;
       }
       i++;
@@ -119,6 +123,7 @@ private:
         i += 3;
         usage = bcd_2_int(telegram, i, 3);
         ret_val = usage / 1000.0;
+        ESP_LOGVV(TAG, "Found register '0BAB3C' with '%d'->'%f'", phase, usage, ret_val.value());
         break;
       }
       i++;

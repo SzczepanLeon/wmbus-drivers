@@ -49,7 +49,7 @@ private:
                ((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]));
       // in kWh
       ret_val = usage / 27777.0;
-      ESP_LOGVV(TAG, "tpl_ci_field '0x79': '%d'->'%f'", usage, ret_val.value());
+      ESP_LOGVV(TAG, "Found total_energy_consumption with '%d'->'%f'", usage, ret_val.value());
     }
     return ret_val;
   };
@@ -64,6 +64,7 @@ private:
       flow = (((uint32_t)telegram[i+3] << 24) | ((uint32_t)telegram[i+2] << 16) |
               ((uint32_t)telegram[i+1] << 8)  |  (uint32_t)telegram[i+0]);
       ret_val = (double)flow;
+      ESP_LOGVV(TAG, "Found volume_flow with '%f'", ret_val.value());
     }
     return ret_val;
   };

@@ -34,6 +34,7 @@ private:
     ret_val = ((((uint32_t)telegram[i+4] << 8) + (uint32_t)telegram[i+3]) / 10.0) + 
               ((((uint32_t)telegram[i+8] << 8) + (uint32_t)telegram[i+7]) / 10.0);
 
+    ESP_LOGVV(TAG, "Found total_water with '%f'", ret_val.value());
     return ret_val;
   };
 };

@@ -30,11 +30,11 @@ private:
   esphome::optional<double> get_total_water_m3(std::vector<unsigned char> &telegram) {
     esphome::optional<double> ret_val{};
     uint32_t usage = 0;
-    // Seems that AT-WMBUS-08 is not decrypted. Maybe it is not true, but let's try ...
     size_t i = 11;
     usage = ((uint32_t)telegram[i+3] << 24) | ((uint32_t)telegram[i+2] << 16) |
             ((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]);
     ret_val = (usage / 3.0) / 1000.0;
+    ESP_LOGVV(TAG, "Found total_water with '%d'->'%f'", usage, ret_val.value());
     return ret_val;
   };
 };

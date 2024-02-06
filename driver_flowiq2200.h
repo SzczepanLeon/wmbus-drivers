@@ -31,7 +31,7 @@ struct Flowiq2200: Driver
   };
 
 //                             X         X     X                             X      X
-//           CRC            status?    prev   maxF    06FF1B    date T1 T2 flow   total
+//           CRC             status    prev   maxF    06FF1B    date T1 T2 flow   total
 // 0001     1718 1920212223 24252627 28293031 3233 343536373839 4041 42 43 4445 46474849 50
 // 3244 ... FDC3 7905099CE6 00000000 7CE20300 7C05 06600006D000 0132 0B 11 0000 79E70300 0F
 
@@ -49,6 +49,7 @@ private:
       usage = (((uint32_t)telegram[i+3] << 24) | ((uint32_t)telegram[i+2] << 16) |
                ((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]));
       ret_val = usage / 1000.0;
+      ESP_LOGVV(TAG, "Found total_water with '%d'->'%f'", usage, ret_val.value());
     }
     return ret_val;
   };
@@ -66,6 +67,7 @@ private:
       usage = (((uint32_t)telegram[i+3] << 24) | ((uint32_t)telegram[i+2] << 16) |
                ((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]));
       ret_val = usage / 1000.0;
+      ESP_LOGVV(TAG, "Found target_water with '%d'->'%f'", usage, ret_val.value());
     }
     return ret_val;
   };
@@ -83,6 +85,7 @@ private:
       status = (((uint32_t)telegram[i+3] << 24) | ((uint32_t)telegram[i+2] << 16) |
                 ((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]));
       ret_val = (double)status;
+      ESP_LOGVV(TAG, "Found status with '%08X'", status);
     }
     return ret_val;
   };
@@ -99,6 +102,7 @@ private:
       uint8_t i = 44;
       flow = (((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]));
       ret_val = (double)flow;
+      ESP_LOGVV(TAG, "Found volume_flow with '%d'->'%f'", flow, ret_val.value());
     }
     return ret_val;
   };
@@ -115,6 +119,7 @@ private:
       uint8_t i = 32;
       flow = (((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]));
       ret_val = (double)flow;
+      ESP_LOGVV(TAG, "Found max_flow with '%d'->'%f'", flow, ret_val.value());
     }
     return ret_val;
   };

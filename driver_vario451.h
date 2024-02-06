@@ -30,8 +30,8 @@ struct Vario451: Driver
 private:
   esphome::optional<double> total_heating_kwh(std::vector<unsigned char> &telegram) {
     // in kWh
-      double total_heating_in_kwh = get_total_heating_in_gj(telegram) * 277.777;
-      return esphome::make_optional(total_heating_in_kwh);
+    double total_heating_in_kwh = get_total_heating_in_gj(telegram) * 277.777;
+    return esphome::make_optional(total_heating_in_kwh);
   }
 
   esphome::optional<double> total_heating_gj(std::vector<unsigned char> &telegram) {
@@ -45,6 +45,7 @@ private:
 
     usage = ((((uint32_t)telegram[i+4] << 8) + (uint32_t)telegram[i+3]) / 1000.0) + 
             ((((uint32_t)telegram[i+8] << 8) + (uint32_t)telegram[i+7]) / 1000.0);
+    ESP_LOGVV(TAG, "Found total_heating with '%f'", usage);
     return usage;
   };
 };

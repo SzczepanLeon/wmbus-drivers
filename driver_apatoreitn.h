@@ -45,6 +45,7 @@ private:
     }
 
     ret_val = (((uint32_t)telegram[i+9] << 8) + (uint32_t)telegram[i+8]);
+    ESP_LOGVV(TAG, "Found current_hca with '%f'", ret_val.value());
 
     return ret_val;
   };
@@ -62,6 +63,7 @@ private:
     }
 
     ret_val = (((uint32_t)telegram[i+5] << 8) + (uint32_t)telegram[i+4]);
+    ESP_LOGVV(TAG, "Found previous_hca with '%f'", ret_val.value());
 
     return ret_val;
   };
@@ -73,6 +75,7 @@ private:
     if ((telegram[8] == 0x09) && (telegram.size() > 52)) {
       ret_val = (((uint32_t)telegram[20] << 8) + (uint32_t)telegram[19]);
     }
+    ESP_LOGVV(TAG, "Found currnet_m_hca with '%f'", ret_val.value());
 
     return ret_val;
   };
@@ -84,6 +87,7 @@ private:
     if ((telegram[8] == 0x09) && (telegram.size() > 52)) {
       ret_val = (((uint32_t)telegram[22] << 8) + (uint32_t)telegram[21]);
     }
+    ESP_LOGVV(TAG, "Found previous_m_hca with '%f'", ret_val.value());
 
     return ret_val;
   };
@@ -96,6 +100,7 @@ private:
     }
 
     ret_val = (((uint32_t)telegram[i+15]) + ((uint32_t)telegram[i+14])/256.0);
+    ESP_LOGVV(TAG, "Found temp_room_avg with '%f'", ret_val.value());
 
     return ret_val;
   };

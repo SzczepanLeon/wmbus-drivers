@@ -42,6 +42,7 @@ private:
       uint32_t total = bcd_2_int(std::vector<unsigned char>(decoded_total + 2, decoded_total + 6), 0, 4);
 
       ret_val = total / 1000.0;
+      ESP_LOGVV(TAG, "Found total_water with '%d'->'%f'", total, ret_val.value());
     }
 
     return ret_val;
