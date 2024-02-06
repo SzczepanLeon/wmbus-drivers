@@ -55,9 +55,6 @@ protected:
   };
 
 // /
-get_023B
-get_523B
-
   esphome::optional<double> get_023B(std::vector<unsigned char> &telegram) {
     esphome::optional<double> ret_val{};
     uint32_t usage = 0;
