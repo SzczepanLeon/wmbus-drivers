@@ -55,6 +55,47 @@ protected:
   };
 
 // /
+  esphome::optional<double> get_0406(std::vector<unsigned char> &telegram) {
+    esphome::optional<double> ret_val{};
+    uint32_t usage = 0;
+    size_t i = 11;
+    uint32_t total_register = 0x0406;
+    while (i < telegram.size()) {
+      uint32_t c = (((uint32_t)telegram[i+0] << 8) | ((uint32_t)telegram[i+1]));
+      if (c == total_register) {
+        i += 2;
+        usage = ((uint32_t)telegram[i+3] << 24) | ((uint32_t)telegram[i+2] << 16) |
+                ((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]);
+        // in kWh
+        ret_val = usage / 1.0;
+        ESP_LOGVV(TAG, "Found register '0406' with '%d'->'%f'", usage, ret_val.value());
+        break;
+      }
+      i++;
+    }
+    return ret_val;
+  };
+
+  esphome::optional<double> get_0414(std::vector<unsigned char> &telegram) {
+    esphome::optional<double> ret_val{};
+    uint32_t usage = 0;
+    size_t i = 11;
+    uint32_t total_register = 0x0414;
+    while (i < telegram.size()) {
+      uint32_t c = (((uint32_t)telegram[i+0] << 8) | ((uint32_t)telegram[i+1]));
+      if (c == total_register) {
+        i += 2;
+        usage = ((uint32_t)telegram[i+3] << 24) | ((uint32_t)telegram[i+2] << 16) |
+                ((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]);
+        ret_val = usage / 100.0;
+        ESP_LOGVV(TAG, "Found register '0414' with '%d'->'%f'", usage, ret_val.value());
+        break;
+      }
+      i++;
+    }
+    return ret_val;
+  };
+
   esphome::optional<double> get_0413(std::vector<unsigned char> &telegram) {
     esphome::optional<double> ret_val{};
     uint32_t usage = 0;
@@ -348,6 +389,34 @@ protected:
         // in C
         ret_val = usage / 10.0;
         ESP_LOGVV(TAG, "Found register '0A5E' with '%d'->'%f'", usage, ret_val.value());
+        break;
+      }
+      i++;
+    }
+    return ret_val;
+  };
+
+  esphome::optional<double> get_04FF23(std::vector<unsigned char> &telegram) {
+    esphome::optional<double> ret_val{};
+    uint32_t usage = 0;
+    size_t i = 11;
+    uint32_t status_register = 0x04FF23;
+    while (i < telegram.size()) {
+      uint32_t c = (((uint32_t)telegram[i+0] << 16) | ((uint32_t)telegram[i+1] << 8) | ((uint32_t)telegram[i+2]));
+      if (c == status_register) {
+        i += 3;
+        uint16_t alarms = 0;
+        // ToDo
+        // alarms |= (telegram[i] & 0x1)       << 1; // dry
+        // alarms |= (telegram[12] >> 7)       << 2; // reverse
+        // alarms |= (telegram[12] >> 5 & 0x1) << 3; // leak
+        // alarms |= (telegram[13] >> 7)       << 4; // burst
+        // ret_val = (double)alarms;
+        //                     { 0x01 , "DRY" },
+        //                     { 0x02 , "REVERSE" },
+        //                     { 0x04 , "LEAK" },
+        //                     { 0x08 , "BURST" },
+        // ESP_LOGVV(TAG, "Found register '04FF23' with '%d'->'%0X'", usage, ret_val.value());
         break;
       }
       i++;

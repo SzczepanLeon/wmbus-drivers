@@ -11,6 +11,7 @@
 #include "driver_elf.h"
 #include "driver_evo868.h"
 #include "driver_fhkvdataiii.h"
+#include "driver_flowiq2200.h"
 #include "driver_hydrocalm3.h"
 #include "driver_hydrodigit.h"
 #include "driver_hydrus.h"
