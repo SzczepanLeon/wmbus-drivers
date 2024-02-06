@@ -18,7 +18,7 @@ struct Flowiq2200: Driver
 
     add_to_map(ret_val, "total_water_m3", this->get_total_water_m3(telegram));
     add_to_map(ret_val, "target_water_m3", this->get_target_water_m3(telegram));
-    // add_to_map(ret_val, "status", this->get_status(telegram));
+    add_to_map(ret_val, "status", this->get_status(telegram));
     // add_to_map(ret_val, "max_flow_m3h", this->get_92013B(telegram));
     // add_to_map(ret_val, "min_flow_m3h", this->get_A2013B(telegram));
     // add_to_map(ret_val, "min_flow_temperature_c", this->get_A1015B(telegram));
