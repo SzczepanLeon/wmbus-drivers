@@ -108,7 +108,7 @@ protected:
         usage = ((uint32_t)telegram[i+3] << 24) | ((uint32_t)telegram[i+2] << 16) |
                 ((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]);
         ret_val = usage / 1000.0;
-        ESP_LOGVV(TAG, "Found register '0413' with '%d'->'%f'", usage, ret_val.value());
+        ESP_LOGV(TAG, "Found register '0413' with '%d'->'%f'", usage, ret_val.value());
         break;
       }
       i++;
@@ -128,7 +128,7 @@ protected:
         usage = ((uint32_t)telegram[i+3] << 24) | ((uint32_t)telegram[i+2] << 16) |
                 ((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]);
         ret_val = usage / 1000.0;
-        ESP_LOGVV(TAG, "Found register '3413' with '%d'->'%f'", usage, ret_val.value());
+        ESP_LOGV(TAG, "Found register '3413' with '%d'->'%f'", usage, ret_val.value());
         break;
       }
       i++;
@@ -426,18 +426,9 @@ protected:
       uint32_t c = (((uint32_t)telegram[i+0] << 16) | ((uint32_t)telegram[i+1] << 8) | ((uint32_t)telegram[i+2]));
       if (c == status_register) {
         i += 3;
-        uint16_t alarms = 0;
-        // ToDo
-        // alarms |= (telegram[i] & 0x1)       << 1; // dry
-        // alarms |= (telegram[12] >> 7)       << 2; // reverse
-        // alarms |= (telegram[12] >> 5 & 0x1) << 3; // leak
-        // alarms |= (telegram[13] >> 7)       << 4; // burst
-        // ret_val = (double)alarms;
-        //                     { 0x01 , "DRY" },
-        //                     { 0x02 , "REVERSE" },
-        //                     { 0x04 , "LEAK" },
-        //                     { 0x08 , "BURST" },
-        // ESP_LOGVV(TAG, "Found register '04FF23' with '%d'->'%0X'", usage, ret_val.value());
+        uint32_t alarms = ((uint32_t)telegram[i+3] << 24) | ((uint32_t)telegram[i+2] << 16) |
+                          ((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]);
+        ESP_LOGV(TAG, "Found register '04FF23' with '%04X'", ret_val.value());
         break;
       }
       i++;
