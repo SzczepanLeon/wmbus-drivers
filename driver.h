@@ -181,7 +181,7 @@ protected:
     esphome::optional<double> ret_val{};
     uint32_t usage = 0;
     size_t i = 11;
-    uint32_t total_register = 0x3413;
+    uint32_t total_register = 0x4413;
     while (i < telegram.size()) {
       uint32_t c = (((uint32_t)telegram[i+0] << 8) | ((uint32_t)telegram[i+1]));
       if (c == total_register) {
@@ -189,7 +189,7 @@ protected:
         usage = ((uint32_t)telegram[i+3] << 24) | ((uint32_t)telegram[i+2] << 16) |
                 ((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]);
         ret_val = usage / 1000.0;
-        ESP_LOGV(TAG, "Found register '3413' with '%d'->'%f'", usage, ret_val.value());
+        ESP_LOGV(TAG, "Found register '4413' with '%d'->'%f'", usage, ret_val.value());
         break;
       }
       i++;
