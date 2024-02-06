@@ -123,7 +123,7 @@ private:
         i += 3;
         usage = bcd_2_int(telegram, i, 3);
         ret_val = usage / 1000.0;
-        ESP_LOGVV(TAG, "Found register '0BAB3C' with '%d'->'%f'", phase, usage, ret_val.value());
+        ESP_LOGVV(TAG, "Found register '0BAB3C' with '%d'->'%f'", usage, ret_val.value());
         break;
       }
       i++;
