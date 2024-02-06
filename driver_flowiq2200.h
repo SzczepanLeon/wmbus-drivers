@@ -82,7 +82,7 @@ private:
       uint8_t i = 24;
       status = (((uint32_t)telegram[i+3] << 24) | ((uint32_t)telegram[i+2] << 16) |
                 ((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]));
-      ret_val = status;
+      ret_val = (double)status;
     }
     return ret_val;
   };
@@ -98,7 +98,7 @@ private:
       uint32_t flow{0};
       uint8_t i = 44;
       flow = (((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]));
-      ret_val = flow;
+      ret_val = (double)flow;
     }
     return ret_val;
   };
@@ -114,7 +114,7 @@ private:
       uint32_t flow{0};
       uint8_t i = 32;
       flow = (((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]));
-      ret_val = flow;
+      ret_val = (double)flow;
     }
     return ret_val;
   };

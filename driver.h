@@ -65,8 +65,8 @@ protected:
       if (c == total_register) {
         i += 2;
         usage = ((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]);
-        // in l
-        ret_val = usage;
+        // in l/h
+        ret_val = (double)usage;
         ESP_LOGV(TAG, "Found register '023B' with '%d'->'%f'", usage, ret_val.value());
         break;
       }
@@ -85,9 +85,30 @@ protected:
       if (c == total_register) {
         i += 2;
         usage = ((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]);
-        // in l
-        ret_val = usage;
+        // in l/h
+        ret_val = (double)usage;
         ESP_LOGV(TAG, "Found register '523B' with '%d'->'%f'", usage, ret_val.value());
+        break;
+      }
+      i++;
+    }
+    return ret_val;
+  };
+
+  esphome::optional<double> get_043B(std::vector<unsigned char> &telegram) {
+    esphome::optional<double> ret_val{};
+    uint32_t usage = 0;
+    size_t i = 11;
+    uint32_t total_register = 0x043B;
+    while (i < telegram.size()) {
+      uint32_t c = (((uint32_t)telegram[i+0] << 8) | ((uint32_t)telegram[i+1]));
+      if (c == total_register) {
+        i += 2;
+        usage = ((uint32_t)telegram[i+3] << 24) | ((uint32_t)telegram[i+2] << 16) |
+                ((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]);
+        // in l/h
+        ret_val = (double)usage;
+        ESP_LOGV(TAG, "Found register '043B' with '%d'->'%f'", usage, ret_val.value());
         break;
       }
       i++;
@@ -468,7 +489,8 @@ protected:
         i += 3;
         uint32_t alarms = ((uint32_t)telegram[i+3] << 24) | ((uint32_t)telegram[i+2] << 16) |
                           ((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]);
-        ESP_LOGV(TAG, "Found register '04FF23' with '%04X'", ret_val.value());
+        ret_val = (double)usage;
+        ESP_LOGV(TAG, "Found register '04FF23' with '%04X'", alarms);
         break;
       }
       i++;
@@ -526,7 +548,7 @@ protected:
         i += 2;
         usage = bcd_2_int(telegram, i, 3);
         // in l/h
-        ret_val = usage;
+        ret_val = (double)usage;
         ESP_LOGVV(TAG, "Found register '0B3B' with '%d'->'%f'", usage, ret_val.value());
         break;
       }
