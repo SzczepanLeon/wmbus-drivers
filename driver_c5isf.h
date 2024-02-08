@@ -21,6 +21,8 @@ struct C5isf: Driver
     add_to_map(ret_val, "total_water_m3", this->get_0C13(telegram));
     add_to_map(ret_val, "flow_temperature_c", this->get_0A5A(telegram));
     add_to_map(ret_val, "return_temperature_c", this->get_0A5E(telegram));
+    add_to_map(ret_val, "power_kw", this->get_0B2D(telegram));
+    add_to_map(ret_val, "volume_flow_lh", this->get_0B3B(telegram));
 
     if (ret_val.size() > 0) {
       return ret_val;
