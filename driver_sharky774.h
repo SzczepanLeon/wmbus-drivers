@@ -19,6 +19,7 @@ struct Sharky774 : Driver
     add_to_map(ret_val, "total_energy_consumption_gj", this->get_total_energy_consumption_gj(telegram));
     add_to_map(ret_val, "total_energy_consumption_kwh", this->get_0C0E(telegram));
     add_to_map(ret_val, "power_kw", this->get_0C2B(telegram));
+    add_to_map(ret_val, "power_kw", this->get_0B2D(telegram));
     add_to_map(ret_val, "total_volume_m3", this->get_0C13(telegram));
     add_to_map(ret_val, "volume_flow_lh", this->get_0B3B(telegram));
     add_to_map(ret_val, "flow_temperature_c", this->get_0A5A(telegram));

@@ -536,6 +536,26 @@ struct Driver
       return ret_val;
     };
 
+    esphome::optional<double> get_0B2D(std::vector<unsigned char> &telegram) {
+      esphome::optional<double> ret_val{};
+      uint32_t usage = 0;
+      size_t i = 11;
+      uint32_t total_register = 0x0B2D;
+      while (i < telegram.size()) {
+        uint32_t c = (((uint32_t)telegram[i + 0] << 8) | ((uint32_t)telegram[i + 1]));
+        if (c == total_register) {
+          i += 2;
+          usage = bcd_2_int(telegram, i, 3);
+          // in kW
+          ret_val = usage / 1000.0;
+          ESP_LOGVV(TAG, "Found register '0B2D' with '%d'->'%f'", usage, ret_val.value());
+          break;
+        }
+        i++;
+      }
+      return ret_val;
+    };
+
     esphome::optional<double> get_0B3B(std::vector<unsigned char> &telegram) {
       esphome::optional<double> ret_val{};
       uint32_t usage = 0;
