@@ -21,6 +21,7 @@
 #include "driver_kamheat.h"
 #include "driver_mkradio3.h"
 #include "driver_mkradio4.h"
+#include "driver_mkradio4a.h"
 #include "driver_multical21.h"
 #include "driver_qheat.h"
 #include "driver_qwater.h"
