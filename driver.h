@@ -605,7 +605,7 @@ struct Driver
         uint32_t c = (((uint32_t)telegram[i + 0] << 8) | ((uint32_t)telegram[i + 1]));
         if (c == total_register) {
           i += 2;
-          usage = (((uint32_t)telegram[i+2] << 16) | ((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]);
+          usage = (((uint32_t)telegram[i+2] << 16) | ((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]));
           // in m3
           ret_val = usage / 1000.0;
           ESP_LOGVV(TAG, "Found register '4315' with '%d'->'%f'", usage, ret_val.value());
