@@ -106,7 +106,7 @@ struct Driver
           i += 2;
           usage = ((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]);
           // in °C
-          ret_val = (double)usage;
+          ret_val = (double)usage / 100.0;
           ESP_LOGVV(TAG, "Found register '0259' with '%d'->'%f'", usage, ret_val.value());
           break;
         }
@@ -126,7 +126,7 @@ struct Driver
           i += 2;
           usage = ((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]);
           // in °C
-          ret_val = (double)usage;
+          ret_val = (double)usage / 100.0;
           ESP_LOGVV(TAG, "Found register '025D' with '%d'->'%f'", usage, ret_val.value());
           break;
         }
@@ -169,6 +169,27 @@ struct Driver
           // in l/h
           ret_val = (double)usage;
           ESP_LOGVV(TAG, "Found register '043B' with '%d'->'%f'", usage, ret_val.value());
+          break;
+        }
+        i++;
+      }
+      return ret_val;
+    };
+
+    esphome::optional<double> get_0405(std::vector<unsigned char> &telegram) {
+      esphome::optional<double> ret_val{};
+      uint32_t usage = 0;
+      size_t i = 11;
+      uint32_t total_register = 0x0405;
+      while (i < telegram.size()) {
+        uint32_t c = (((uint32_t)telegram[i+0] << 8) | ((uint32_t)telegram[i+1]));
+        if (c == total_register) {
+          i += 2;
+          usage = ((uint32_t)telegram[i+3] << 24) | ((uint32_t)telegram[i+2] << 16) |
+                  ((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]);
+          // in kWh
+          ret_val = usage / 10.0;
+          ESP_LOGVV(TAG, "Found register '0405' with '%d'->'%f'", usage, ret_val.value());
           break;
         }
         i++;
