@@ -20,6 +20,7 @@ struct Kamheat: Driver
     add_to_map(ret_val, "total_energy_consumption_kwh", this->get_040F(telegram));
     add_to_map(ret_val, "total_energy_consumption_kwh", this->get_total_energy_consumption_kwh(telegram));
     add_to_map(ret_val, "volume_flow_lh", this->get_043B(telegram));
+    add_to_map(ret_val, "volume_flow_lh", this->get_023B(telegram));
     add_to_map(ret_val, "volume_flow_lh", this->get_volume_flow_lh(telegram));
     // add_to_map(ret_val, "total_forward_energy_m3c", this->get_04FF07(telegram));
     // add_to_map(ret_val, "total_return_energy_m3c", this->get_04FF08(telegram));
