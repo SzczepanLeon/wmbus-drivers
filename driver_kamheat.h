@@ -22,12 +22,13 @@ struct Kamheat: Driver
     add_to_map(ret_val, "volume_flow_lh", this->get_043B(telegram));
     add_to_map(ret_val, "volume_flow_lh", this->get_023B(telegram));
     add_to_map(ret_val, "volume_flow_lh", this->get_volume_flow_lh(telegram));
+    add_to_map(ret_val, "power_kw", this->get_022D(telegram));
     // add_to_map(ret_val, "total_forward_energy_m3c", this->get_04FF07(telegram));
     // add_to_map(ret_val, "total_return_energy_m3c", this->get_04FF08(telegram));
     // add_to_map(ret_val, "total_volume_m3", this->get_0414(telegram));
-    // add_to_map(ret_val, "flow_temperature_c", this->get_0259(telegram));
+    add_to_map(ret_val, "flow_temperature_c", this->get_0259(telegram));
     // add_to_map(ret_val, "flow_temperature_c", this->get_flow_temperature_c(telegram));
-    // add_to_map(ret_val, "return_temperature_c", this->get_025D(telegram));
+    add_to_map(ret_val, "return_temperature_c", this->get_025D(telegram));
     // add_to_map(ret_val, "return_temperature_c", this->get_return_temperature_c(telegram));
 
     if (ret_val.size() > 0) {
