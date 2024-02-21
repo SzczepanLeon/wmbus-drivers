@@ -55,6 +55,26 @@ struct Driver
     };
 
   // /
+    esphome::optional<double> get_022D(std::vector<unsigned char> &telegram) {
+      esphome::optional<double> ret_val{};
+      uint32_t usage = 0;
+      size_t i = 11;
+      uint32_t total_register = 0x022D;
+      while (i < telegram.size()) {
+        uint32_t c = (((uint32_t)telegram[i+0] << 8) | ((uint32_t)telegram[i+1]));
+        if (c == total_register) {
+          i += 2;
+          usage = ((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]);
+          // in kW
+          ret_val = (double)usage/10.0;
+          ESP_LOGVV(TAG, "Found register '022D' with '%d'->'%f'", usage, ret_val.value());
+          break;
+        }
+        i++;
+      }
+      return ret_val;
+    };
+
     esphome::optional<double> get_023B(std::vector<unsigned char> &telegram) {
       esphome::optional<double> ret_val{};
       uint32_t usage = 0;
@@ -68,6 +88,46 @@ struct Driver
           // in l/h
           ret_val = (double)usage;
           ESP_LOGVV(TAG, "Found register '023B' with '%d'->'%f'", usage, ret_val.value());
+          break;
+        }
+        i++;
+      }
+      return ret_val;
+    };
+
+    esphome::optional<double> get_0259(std::vector<unsigned char> &telegram) {
+      esphome::optional<double> ret_val{};
+      uint32_t usage = 0;
+      size_t i = 11;
+      uint32_t total_register = 0x0259;
+      while (i < telegram.size()) {
+        uint32_t c = (((uint32_t)telegram[i+0] << 8) | ((uint32_t)telegram[i+1]));
+        if (c == total_register) {
+          i += 2;
+          usage = ((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]);
+          // in °C
+          ret_val = (double)usage;
+          ESP_LOGVV(TAG, "Found register '0259' with '%d'->'%f'", usage, ret_val.value());
+          break;
+        }
+        i++;
+      }
+      return ret_val;
+    };
+
+    esphome::optional<double> get_025D(std::vector<unsigned char> &telegram) {
+      esphome::optional<double> ret_val{};
+      uint32_t usage = 0;
+      size_t i = 11;
+      uint32_t total_register = 0x025D;
+      while (i < telegram.size()) {
+        uint32_t c = (((uint32_t)telegram[i+0] << 8) | ((uint32_t)telegram[i+1]));
+        if (c == total_register) {
+          i += 2;
+          usage = ((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]);
+          // in °C
+          ret_val = (double)usage;
+          ESP_LOGVV(TAG, "Found register '025D' with '%d'->'%f'", usage, ret_val.value());
           break;
         }
         i++;
