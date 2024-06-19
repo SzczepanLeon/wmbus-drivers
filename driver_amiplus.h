@@ -62,7 +62,7 @@ private:
     esphome::optional<double> ret_val{};
     uint32_t usage = 0;
     size_t i = 11;
-    uint32_t total_register = 0x8E0003 | ((tarrif*10) << 8);
+    uint32_t total_register = 0x8E0003 | ((tarrif*16) << 8);
     while (i < telegram.size()) {
       uint32_t c = (((uint32_t)telegram[i+0] << 16) | ((uint32_t)telegram[i+1] << 8 ) | ((uint32_t)telegram[i+2]) );
       if (c == total_register) {
