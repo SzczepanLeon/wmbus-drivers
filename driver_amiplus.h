@@ -66,7 +66,7 @@ private:
     while (i < telegram.size()) {
       uint32_t c = (((uint32_t)telegram[i+0] << 16) | ((uint32_t)telegram[i+1] << 8 ) | ((uint32_t)telegram[i+2]) );
       if (c == total_register) {
-        i += 4;
+        i += 3;
         usage = bcd_2_int(telegram, i, 6);
         ret_val = usage / 1000.0;
         ESP_LOGVV(TAG, "Found register '%X' with '%d'->'%f'", total_register, usage, ret_val.value());
