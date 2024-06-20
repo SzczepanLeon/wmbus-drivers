@@ -88,7 +88,7 @@ private:
     esphome::optional<double> ret_val{};
     uint32_t usage = 0;
     size_t i = 11;
-    uint64_t total_register = tarrif < 4 ? 0x8E00833C | ((tarrif*16) << 24) : 0x8E8010833C;
+    uint64_t total_register = tarrif < 4 ? 0x8E00833C | ((tarrif*16) << 16) : 0x8E8010833C;
     while (i < telegram.size()) {
       uint64_t c = tarrif < 4 ? 
                   (((uint32_t)telegram[i+0] << 24) | ((uint32_t)telegram[i+1] << 16 ) | ((uint32_t)telegram[i+2] << 8) | ((uint32_t)telegram[i+3]) )
