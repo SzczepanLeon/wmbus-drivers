@@ -32,7 +32,6 @@ struct Multical21: Driver
 private:
   esphome::optional<double> get_total_water_m3(std::vector<unsigned char> &telegram) {
     esphome::optional<double> ret_val{};
-    uint8_t l_field = telegram[0];
     uint8_t tpl_ci_field = telegram[19];
 
     if (tpl_ci_field == 0x78) {
@@ -54,7 +53,6 @@ private:
 
   esphome::optional<double> get_target_water_m3(std::vector<unsigned char> &telegram) {
     esphome::optional<double> ret_val{};
-    uint8_t l_field = telegram[0];
     uint8_t tpl_ci_field = telegram[19];
 
     if (tpl_ci_field == 0x78) {
