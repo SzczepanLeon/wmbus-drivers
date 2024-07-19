@@ -77,11 +77,11 @@ private:
     uint8_t l_field = telegram[0];
     uint8_t tpl_ci_field = telegram[19];
 
-    if (tpl_ci_field == 0x78) {
+    if ((tpl_ci_field == 0x78) && (l_field >= 39)) {
       return this->get_615B(telegram);
     }
 
-    if (tpl_ci_field == 0x79) {  // check !!!!
+    if ((tpl_ci_field == 0x79) && (l_field >= 35)) {  // check !!!!
       uint32_t temperature{0};
       uint8_t i = 34;  // check !!!!
       temperature = ((uint32_t) telegram[i + 0]);
@@ -98,11 +98,11 @@ private:
     uint8_t l_field = telegram[0];
     uint8_t tpl_ci_field = telegram[19];
 
-    if (tpl_ci_field == 0x78) {
+    if ((tpl_ci_field == 0x78) && (l_field >= 43)) {
       return this->get_6167(telegram);
     }
 
-    if (tpl_ci_field == 0x79) {  // check !!!!
+    if ((tpl_ci_field == 0x79) && (l_field >= 36)) {  // check !!!!
       uint32_t temperature{0};
       uint8_t i = 35;  // check !!!!
       temperature = ((uint32_t) telegram[i + 0]);
