@@ -278,6 +278,46 @@ struct Driver
       return ret_val;
     };
 
+    esphome::optional<double> get_615B(std::vector<unsigned char> &telegram) {
+      esphome::optional<double> ret_val{};
+      uint32_t temperature = 0;
+      size_t i = 11;
+      uint32_t temperature_register = 0x615B;
+      while (i < telegram.size()) {
+        uint32_t c = (((uint32_t) telegram[i + 0] << 8) | ((uint32_t) telegram[i + 1]));
+        if (c == temperature_register) {
+          i += 2;
+          temperature = ((uint32_t) telegram[i + 0]);
+          // in celcius degrees
+          ret_val = temperature / 1.0;
+          ESP_LOGVV(TAG, "Found register '615B' with '%d'->'%f'", temperature, ret_val.value());
+          break;
+        }
+        i++;
+      }
+      return ret_val;
+    };
+
+    esphome::optional<double> get_6167(std::vector<unsigned char> &telegram) {
+      esphome::optional<double> ret_val{};
+      uint32_t temperature = 0;
+      size_t i = 11;
+      uint32_t temperature_register = 0x6167;
+      while (i < telegram.size()) {
+        uint32_t c = (((uint32_t) telegram[i + 0] << 8) | ((uint32_t) telegram[i + 1]));
+        if (c == temperature_register) {
+          i += 2;
+          temperature = ((uint32_t) telegram[i + 0]);
+          // in celcius degrees
+          ret_val = temperature / 1.0;
+          ESP_LOGVV(TAG, "Found register '6167' with '%d'->'%f'", temperature, ret_val.value());
+          break;
+        }
+        i++;
+      }
+      return ret_val;
+    };
+
     esphome::optional<double> get_040F(std::vector<unsigned char> &telegram) {
       esphome::optional<double> ret_val{};
       uint32_t usage = 0;
