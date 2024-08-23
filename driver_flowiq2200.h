@@ -20,7 +20,10 @@ struct Flowiq2200: Driver
     add_to_map(ret_val, "target_water_m3", this->get_target_water_m3(telegram));
     add_to_map(ret_val, "status", this->get_status(telegram));
     add_to_map(ret_val, "volume_flow_lh", this->get_volume_flow_lh(telegram));
+    add_to_map(ret_val, "min_flow_lh", this->get_min_flow_lh(telegram));
     add_to_map(ret_val, "max_flow_lh", this->get_max_flow_lh(telegram));
+    add_to_map(ret_val, "min_flow_temperature_c", this->get_min_flow_temperature_c(telegram));
+    add_to_map(ret_val, "max_flow_temperature_c", this->get_max_flow_temperature_c(telegram));
 
     if (ret_val.size() > 0) {
       return ret_val;
@@ -112,6 +115,23 @@ private:
     return ret_val;
   };
 
+  esphome::optional<double> get_min_flow_lh(std::vector<unsigned char> &telegram) {
+    esphome::optional<double> ret_val{};
+    uint8_t l_field = telegram[0];
+    uint8_t tpl_ci_field = telegram[19];
+    if (tpl_ci_field == 0x78) {
+      ret_val = this->get_523B(telegram);  
+    }
+    else if ((tpl_ci_field == 0x79) && (l_field > 49)) {
+      ESP_LOGD(TAG, "Received frame is compressed"); 
+      uint32_t flow{0};
+      uint8_t i = 27;
+      flow = (((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]));
+      ret_val = (double)flow;
+      ESP_LOGVV(TAG, "Found min_flow with '%d'->'%f'", flow, ret_val.value());
+    }
+    return ret_val;
+  };
   esphome::optional<double> get_max_flow_lh(std::vector<unsigned char> &telegram) {
     esphome::optional<double> ret_val{};
     uint8_t l_field = telegram[0];
@@ -129,5 +149,38 @@ private:
     }
     return ret_val;
   };
-
+  esphome::optional<double> get_min_flow_temperature_c(std::vector<unsigned char> &telegram) {
+    esphome::optional<double> ret_val{};
+    uint8_t l_field = telegram[0];
+    uint8_t tpl_ci_field = telegram[19];
+    if (tpl_ci_field == 0x78) {
+      ret_val = this->get_523B(telegram);  
+    }
+    else if ((tpl_ci_field == 0x79) && (l_field > 49)) {
+      ESP_LOGD(TAG, "Received frame is compressed"); 
+      uint32_t flow{0};
+      uint8_t i = 34;
+      flow = (((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]));
+      ret_val = (double)flow;
+      ESP_LOGVV(TAG, "Found min_flow_temperature_c with '%d'->'%f'", flow, ret_val.value());
+    }
+    return ret_val;
+  };
+  esphome::optional<double> get_max_flow_temperature_c(std::vector<unsigned char> &telegram) {
+    esphome::optional<double> ret_val{};
+    uint8_t l_field = telegram[0];
+    uint8_t tpl_ci_field = telegram[19];
+    if (tpl_ci_field == 0x78) {
+      ret_val = this->get_523B(telegram);  
+    }
+    else if ((tpl_ci_field == 0x79) && (l_field > 49)) {
+      ESP_LOGD(TAG, "Received frame is compressed"); 
+      uint32_t flow{0};
+      uint8_t i = 36;
+      flow = (((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]));
+      ret_val = (double)flow;
+      ESP_LOGVV(TAG, "Found max_flow_temperature_c with '%d'->'%f'", flow, ret_val.value());
+    }
+    return ret_val;
+  };
 };
