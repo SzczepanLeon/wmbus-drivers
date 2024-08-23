@@ -47,7 +47,7 @@ private:
      else if ((tpl_ci_field == 0x79) && (l_field > 49)) {
        ESP_LOGVV(TAG, "Found compressed frame");  
        uint32_t usage{0};
-       uint8_t i = 28;
+       uint8_t i = 29;
        usage = (((uint32_t)telegram[i+3] << 24) | ((uint32_t)telegram[i+2] << 16) |
                 ((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]));
        ret_val = usage / 1000.0;
