@@ -67,7 +67,7 @@ private:
       ret_val = this->get_4413(telegram);
     }
      else if ((tpl_ci_field == 0x79) && (l_field > 49)) {
-      ESP_LOGD(TAG, "Received frame is compressed"); 
+       
       uint32_t usage{0};
       uint8_t i = 32;
       usage = (((uint32_t)telegram[i+3] << 24) | ((uint32_t)telegram[i+2] << 16) |
@@ -86,7 +86,7 @@ private:
       ret_val = this->get_04FF23(telegram);  
     }
     else if ((tpl_ci_field == 0x79) && (l_field > 49)) {
-      ESP_LOGD(TAG, "Received frame is compressed"); 
+       
       uint32_t status{0};
       uint8_t i = 24;
       status = (((uint32_t)telegram[i+3] << 24) | ((uint32_t)telegram[i+2] << 16) |
@@ -105,7 +105,7 @@ private:
       ret_val = this->get_023B(telegram);  
     }
      else if ((tpl_ci_field == 0x79) && (l_field > 49)) {
-      ESP_LOGD(TAG, "Received frame is compressed"); 
+       
       uint32_t flow{0};
       uint8_t i = 22;
       flow = (((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]));
@@ -123,7 +123,7 @@ private:
       ret_val = this->get_523B(telegram);  
     }
     else if ((tpl_ci_field == 0x79) && (l_field > 49)) {
-      ESP_LOGD(TAG, "Received frame is compressed"); 
+       
       uint32_t flow{0};
       uint8_t i = 27;
       flow = (((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]));
@@ -140,7 +140,7 @@ private:
       ret_val = this->get_523B(telegram);  
     }
     else if ((tpl_ci_field == 0x79) && (l_field > 49)) {
-      ESP_LOGD(TAG, "Received frame is compressed"); 
+       
       uint32_t flow{0};
       uint8_t i = 40;
       flow = (((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]));
@@ -157,7 +157,7 @@ private:
       ret_val = this->get_615B(telegram);  
     }
     else if ((tpl_ci_field == 0x79) && (l_field > 49)) {
-      ESP_LOGD(TAG, "Received frame is compressed"); 
+       
       uint32_t flow{0};
       uint8_t i = 34;
       flow = (((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]));
@@ -174,7 +174,7 @@ private:
       ret_val = this->get_615B(telegram);  
     }
     else if ((tpl_ci_field == 0x79) && (l_field > 49)) {
-      ESP_LOGD(TAG, "Received frame is compressed"); 
+       
       uint32_t flow{0};
       uint8_t i = 36;
       flow = (((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]));
