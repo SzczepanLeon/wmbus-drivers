@@ -44,10 +44,10 @@ private:
     if (tpl_ci_field == 0x78) {
       ret_val = this->get_0413(telegram);
     }
-     else if ((tpl_ci_field == 0x79) && (l_field > 49)) {
-       ESP_LOGVV(TAG, "Found compressed frame");  
+    else if ((tpl_ci_field == 0x79) && (l_field > 49)) {
+        
        uint32_t usage{0};
-       uint8_t i = 29;
+       uint8_t i = 28;
        usage = (((uint32_t)telegram[i+3] << 24) | ((uint32_t)telegram[i+2] << 16) |
                 ((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]));
        ret_val = usage / 1000.0;
@@ -64,13 +64,13 @@ private:
       ret_val = this->get_4413(telegram);
     }
      else if ((tpl_ci_field == 0x79) && (l_field > 49)) {
-      ESP_LOGVV(TAG, "Found compressed frame");  
-    //   uint32_t usage{0};
-    //   uint8_t i = 28;
-    //   usage = (((uint32_t)telegram[i+3] << 24) | ((uint32_t)telegram[i+2] << 16) |
-    //            ((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]));
-    //   ret_val = usage / 1000.0;
-    //   ESP_LOGVV(TAG, "Found target_water with '%d'->'%f'", usage, ret_val.value());
+      ESP_LOGD(TAG, "Received frame is compressed"); 
+      uint32_t usage{0};
+      uint8_t i = 28;
+      usage = (((uint32_t)telegram[i+3] << 24) | ((uint32_t)telegram[i+2] << 16) |
+               ((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]));
+      ret_val = usage / 1000.0;
+      ESP_LOGVV(TAG, "Found target_water with '%d'->'%f'", usage, ret_val.value());
     }
     return ret_val;
   };
@@ -83,14 +83,14 @@ private:
       ret_val = this->get_04FF23(telegram);  
     }
     else if ((tpl_ci_field == 0x79) && (l_field > 49)) {
-      ESP_LOGVV(TAG, "Found compressed frame");  
-    //   uint32_t status{0};
-    //   uint8_t i = 24;
-    //   status = (((uint32_t)telegram[i+3] << 24) | ((uint32_t)telegram[i+2] << 16) |
-    //             ((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]));
-    //   ret_val = (double)status;
-    //   ESP_LOGVV(TAG, "Found status with '%08X'", status);
-    // }
+      ESP_LOGD(TAG, "Received frame is compressed"); 
+      uint32_t status{0};
+      uint8_t i = 24;
+      status = (((uint32_t)telegram[i+3] << 24) | ((uint32_t)telegram[i+2] << 16) |
+                ((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]));
+      ret_val = (double)status;
+      ESP_LOGVV(TAG, "Found status with '%08X'", status);
+    }
     return ret_val;
   };
 
@@ -101,13 +101,13 @@ private:
     if (tpl_ci_field == 0x78) {
       ret_val = this->get_023B(telegram);  
     }
-    else if ((tpl_ci_field == 0x79) && (l_field > 49)) {
-      ESP_LOGVV(TAG, "Found compressed frame");  
-    //   uint32_t flow{0};
-    //   uint8_t i = 44;
-    //   flow = (((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]));
-    //   ret_val = (double)flow;
-    //   ESP_LOGVV(TAG, "Found volume_flow with '%d'->'%f'", flow, ret_val.value());
+     else if ((tpl_ci_field == 0x79) && (l_field > 49)) {
+      ESP_LOGD(TAG, "Received frame is compressed"); 
+      uint32_t flow{0};
+      uint8_t i = 44;
+      flow = (((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]));
+      ret_val = (double)flow;
+      ESP_LOGVV(TAG, "Found volume_flow with '%d'->'%f'", flow, ret_val.value());
     }
     return ret_val;
   };
@@ -120,12 +120,12 @@ private:
       ret_val = this->get_523B(telegram);  
     }
     else if ((tpl_ci_field == 0x79) && (l_field > 49)) {
-      ESP_LOGVV(TAG, "Found compressed frame");  
-    //   uint32_t flow{0};
-    //   uint8_t i = 32;
-    //   flow = (((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]));
-    //   ret_val = (double)flow;
-    //   ESP_LOGVV(TAG, "Found max_flow with '%d'->'%f'", flow, ret_val.value());
+      ESP_LOGD(TAG, "Received frame is compressed"); 
+      uint32_t flow{0};
+      uint8_t i = 32;
+      flow = (((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]));
+      ret_val = (double)flow;
+      ESP_LOGVV(TAG, "Found max_flow with '%d'->'%f'", flow, ret_val.value());
     }
     return ret_val;
   };
