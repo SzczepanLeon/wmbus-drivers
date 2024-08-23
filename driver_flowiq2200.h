@@ -154,7 +154,7 @@ private:
     uint8_t l_field = telegram[0];
     uint8_t tpl_ci_field = telegram[19];
     if (tpl_ci_field == 0x78) {
-      ret_val = this->get_523B(telegram);  
+      ret_val = this->get_615B(telegram);  
     }
     else if ((tpl_ci_field == 0x79) && (l_field > 49)) {
       ESP_LOGD(TAG, "Received frame is compressed"); 
@@ -171,7 +171,7 @@ private:
     uint8_t l_field = telegram[0];
     uint8_t tpl_ci_field = telegram[19];
     if (tpl_ci_field == 0x78) {
-      ret_val = this->get_523B(telegram);  
+      ret_val = this->get_615B(telegram);  
     }
     else if ((tpl_ci_field == 0x79) && (l_field > 49)) {
       ESP_LOGD(TAG, "Received frame is compressed"); 
