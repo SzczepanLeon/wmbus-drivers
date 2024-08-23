@@ -85,7 +85,7 @@ private:
     else if ((tpl_ci_field == 0x79) && (l_field > 49)) {
       ESP_LOGD(TAG, "Received frame is compressed"); 
       uint32_t status{0};
-      uint8_t i = 22;
+      uint8_t i = 24;
       status = (((uint32_t)telegram[i+3] << 24) | ((uint32_t)telegram[i+2] << 16) |
                 ((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]));
       ret_val = (double)status;
@@ -104,7 +104,7 @@ private:
      else if ((tpl_ci_field == 0x79) && (l_field > 49)) {
       ESP_LOGD(TAG, "Received frame is compressed"); 
       uint32_t flow{0};
-      uint8_t i = 44;
+      uint8_t i = 22;
       flow = (((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]));
       ret_val = (double)flow;
       ESP_LOGVV(TAG, "Found volume_flow with '%d'->'%f'", flow, ret_val.value());
@@ -122,7 +122,7 @@ private:
     else if ((tpl_ci_field == 0x79) && (l_field > 49)) {
       ESP_LOGD(TAG, "Received frame is compressed"); 
       uint32_t flow{0};
-      uint8_t i = 32;
+      uint8_t i = 40;
       flow = (((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]));
       ret_val = (double)flow;
       ESP_LOGVV(TAG, "Found max_flow with '%d'->'%f'", flow, ret_val.value());
