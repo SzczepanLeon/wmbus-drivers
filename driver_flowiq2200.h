@@ -49,7 +49,7 @@ private:
       ret_val = this->get_0413(telegram);
     }
     else if ((tpl_ci_field == 0x79) && (l_field > 49)) {
-       ESP_LOGD(TAG, "Signature of message is: '%H'", signature); 
+       ESP_LOGD(TAG, "Signature of message is: '%X'", signature); 
        uint32_t usage{0};
        uint8_t i = 28;
        usage = (((uint32_t)telegram[i+3] << 24) | ((uint32_t)telegram[i+2] << 16) |
