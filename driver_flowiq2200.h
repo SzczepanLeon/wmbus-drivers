@@ -70,6 +70,11 @@ private:
     esphome::optional<double> ret_val{};
     uint8_t l_field = telegram[0];
     uint8_t tpl_ci_field = telegram[19];
+    uint16_t signature = 0;
+    if ((tpl_ci_field == 0x79) && (l_field > 49)) {
+        signature = ((uint16_t)telegram[20] << 8) | telegram[21];
+       ESP_LOGVV(TAG, "Signature of message is: '%X'", signature); 
+    }
     if (tpl_ci_field == 0x78) {
       ret_val = this->get_4413(telegram);
     }
@@ -90,6 +95,11 @@ private:
     esphome::optional<double> ret_val{};
     uint8_t l_field = telegram[0];
     uint8_t tpl_ci_field = telegram[19];
+    uint16_t signature = 0;
+    if ((tpl_ci_field == 0x79) && (l_field > 49)) {
+        signature = ((uint16_t)telegram[20] << 8) | telegram[21];
+       ESP_LOGVV(TAG, "Signature of message is: '%X'", signature); 
+    }
     if (tpl_ci_field == 0x78) {
       ret_val = this->get_04FF23(telegram);  
     }
@@ -110,6 +120,11 @@ private:
     esphome::optional<double> ret_val{};
     uint8_t l_field = telegram[0];
     uint8_t tpl_ci_field = telegram[19];
+    uint16_t signature = 0;
+    if ((tpl_ci_field == 0x79) && (l_field > 49)) {
+        signature = ((uint16_t)telegram[20] << 8) | telegram[21];
+       ESP_LOGVV(TAG, "Signature of message is: '%X'", signature); 
+    }
     if (tpl_ci_field == 0x78) {
       ret_val = this->get_023B(telegram);  
     }
@@ -129,6 +144,11 @@ private:
     esphome::optional<double> ret_val{};
     uint8_t l_field = telegram[0];
     uint8_t tpl_ci_field = telegram[19];
+    uint16_t signature = 0;
+    if ((tpl_ci_field == 0x79) && (l_field > 49)) {
+        signature = ((uint16_t)telegram[20] << 8) | telegram[21];
+       ESP_LOGVV(TAG, "Signature of message is: '%X'", signature); 
+    }
     if (tpl_ci_field == 0x78) {
       ret_val = this->get_523B(telegram);  
     }
@@ -147,6 +167,11 @@ private:
     esphome::optional<double> ret_val{};
     uint8_t l_field = telegram[0];
     uint8_t tpl_ci_field = telegram[19];
+    uint16_t signature = 0;
+    if ((tpl_ci_field == 0x79) && (l_field > 49)) {
+        signature = ((uint16_t)telegram[20] << 8) | telegram[21];
+       ESP_LOGVV(TAG, "Signature of message is: '%X'", signature); 
+    }
     if (tpl_ci_field == 0x78) {
       ret_val = this->get_523B(telegram);  
     }
@@ -165,6 +190,11 @@ private:
     esphome::optional<double> ret_val{};
     uint8_t l_field = telegram[0];
     uint8_t tpl_ci_field = telegram[19];
+    uint16_t signature = 0;
+    if ((tpl_ci_field == 0x79) && (l_field > 49)) {
+        signature = ((uint16_t)telegram[20] << 8) | telegram[21];
+       ESP_LOGVV(TAG, "Signature of message is: '%X'", signature); 
+    }
     if (tpl_ci_field == 0x78) {
       ret_val = this->get_615B(telegram);  
     }
@@ -183,6 +213,11 @@ private:
     esphome::optional<double> ret_val{};
     uint8_t l_field = telegram[0];
     uint8_t tpl_ci_field = telegram[19];
+    uint16_t signature = 0;
+    if ((tpl_ci_field == 0x79) && (l_field > 49)) {
+        signature = ((uint16_t)telegram[20] << 8) | telegram[21];
+       ESP_LOGVV(TAG, "Signature of message is: '%X'", signature); 
+    }
     if (tpl_ci_field == 0x78) {
       ret_val = this->get_615B(telegram);  
     }
