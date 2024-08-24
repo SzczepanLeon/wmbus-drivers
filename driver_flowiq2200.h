@@ -44,18 +44,28 @@ private:
     esphome::optional<double> ret_val{};
     uint8_t l_field = telegram[0];
     uint8_t tpl_ci_field = telegram[19];
-    uint16_t signature = ((uint16_t)telegram[20] << 8) | telegram[21];
+    uint16_t signature;
+    if ((tpl_ci_field == 0x79) && (l_field > 49)) {
+        signature = ((uint16_t)telegram[20] << 8) | telegram[21];
+       ESP_LOGVV(TAG, "Signature of message is: '%X'", signature); 
+    }
+    else
+    {
+      signature = 0;
+    }
     if (tpl_ci_field == 0x78) {
       ret_val = this->get_0413(telegram);
     }
     else if ((tpl_ci_field == 0x79) && (l_field > 49)) {
-       ESP_LOGD(TAG, "Signature of message is: '%X'", signature); 
-       uint32_t usage{0};
-       uint8_t i = 28;
-       usage = (((uint32_t)telegram[i+3] << 24) | ((uint32_t)telegram[i+2] << 16) |
-                ((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]));
-       ret_val = usage / 1000.0;
-       ESP_LOGVV(TAG, "Found total_water with '%d'->'%f'", usage, ret_val.value());
+       if (signature == 0xF3A9) {
+         ESP_LOGD(TAG, "Signature of message is: '%X'", signature); 
+         uint32_t usage{0};
+         uint8_t i = 28;
+         usage = (((uint32_t)telegram[i+3] << 24) | ((uint32_t)telegram[i+2] << 16) |
+                  ((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]));
+         ret_val = usage / 1000.0;
+         ESP_LOGVV(TAG, "Found total_water with '%d'->'%f'", usage, ret_val.value());
+        }
     }
     return ret_val;
   };
