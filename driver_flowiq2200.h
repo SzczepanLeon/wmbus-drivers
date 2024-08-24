@@ -44,15 +44,12 @@ private:
     esphome::optional<double> ret_val{};
     uint8_t l_field = telegram[0];
     uint8_t tpl_ci_field = telegram[19];
-    uint16_t signature;
+    uint16_t signature = 0;
     if ((tpl_ci_field == 0x79) && (l_field > 49)) {
         signature = ((uint16_t)telegram[20] << 8) | telegram[21];
        ESP_LOGVV(TAG, "Signature of message is: '%X'", signature); 
     }
-    else
-    {
-      signature = 0;
-    }
+
     if (tpl_ci_field == 0x78) {
       ret_val = this->get_0413(telegram);
     }
@@ -77,14 +74,15 @@ private:
     if (tpl_ci_field == 0x78) {
       ret_val = this->get_4413(telegram);
     }
-     else if ((tpl_ci_field == 0x79) && (l_field > 49)) {
-       
-      uint32_t usage{0};
-      uint8_t i = 32;
-      usage = (((uint32_t)telegram[i+3] << 24) | ((uint32_t)telegram[i+2] << 16) |
-               ((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]));
-      ret_val = usage / 1000.0;
-      ESP_LOGVV(TAG, "Found target_water with '%d'->'%f'", usage, ret_val.value());
+    else if ((tpl_ci_field == 0x79) && (l_field > 49)) {
+      if (signature == 0xF3A9) {
+        uint32_t usage{0};
+        uint8_t i = 32;
+        usage = (((uint32_t)telegram[i+3] << 24) | ((uint32_t)telegram[i+2] << 16) |
+                 ((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]));
+        ret_val = usage / 1000.0;
+        ESP_LOGVV(TAG, "Found target_water with '%d'->'%f'", usage, ret_val.value());
+      }
     }
     return ret_val;
   };
@@ -97,13 +95,14 @@ private:
       ret_val = this->get_04FF23(telegram);  
     }
     else if ((tpl_ci_field == 0x79) && (l_field > 49)) {
-       
-      uint32_t status{0};
-      uint8_t i = 24;
-      status = (((uint32_t)telegram[i+3] << 24) | ((uint32_t)telegram[i+2] << 16) |
-                ((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]));
-      ret_val = (double)status;
-      ESP_LOGVV(TAG, "Found status with '%08X'", status);
+      if (signature == 0xF3A9) { 
+        uint32_t status{0};
+        uint8_t i = 24;
+        status = (((uint32_t)telegram[i+3] << 24) | ((uint32_t)telegram[i+2] << 16) |
+                  ((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]));
+        ret_val = (double)status;
+        ESP_LOGVV(TAG, "Found status with '%08X'", status);
+      }
     }
     return ret_val;
   };
@@ -115,13 +114,14 @@ private:
     if (tpl_ci_field == 0x78) {
       ret_val = this->get_023B(telegram);  
     }
-     else if ((tpl_ci_field == 0x79) && (l_field > 49)) {
-       
-      uint32_t flow{0};
-      uint8_t i = 22;
-      flow = (((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]));
-      ret_val = (double)flow;
-      ESP_LOGVV(TAG, "Found volume_flow with '%d'->'%f'", flow, ret_val.value());
+    else if ((tpl_ci_field == 0x79) && (l_field > 49)) {
+      if (signature == 0xF3A9) {
+        uint32_t flow{0};
+        uint8_t i = 22;
+        flow = (((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]));
+        ret_val = (double)flow;
+        ESP_LOGVV(TAG, "Found volume_flow with '%d'->'%f'", flow, ret_val.value());
+      }
     }
     return ret_val;
   };
@@ -134,12 +134,13 @@ private:
       ret_val = this->get_523B(telegram);  
     }
     else if ((tpl_ci_field == 0x79) && (l_field > 49)) {
-       
-      uint32_t flow{0};
-      uint8_t i = 27;
-      flow = (((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]));
-      ret_val = (double)flow;
-      ESP_LOGVV(TAG, "Found min_flow with '%d'->'%f'", flow, ret_val.value());
+      if (signature == 0xF3A9) {   
+        uint32_t flow{0};
+        uint8_t i = 27;
+        flow = (((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]));
+        ret_val = (double)flow;
+        ESP_LOGVV(TAG, "Found min_flow with '%d'->'%f'", flow, ret_val.value());
+      }
     }
     return ret_val;
   };
@@ -151,12 +152,13 @@ private:
       ret_val = this->get_523B(telegram);  
     }
     else if ((tpl_ci_field == 0x79) && (l_field > 49)) {
-       
-      uint32_t flow{0};
-      uint8_t i = 40;
-      flow = (((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]));
-      ret_val = (double)flow;
-      ESP_LOGVV(TAG, "Found max_flow with '%d'->'%f'", flow, ret_val.value());
+      if (signature == 0xF3A9) {   
+        uint32_t flow{0};
+        uint8_t i = 40;
+        flow = (((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]));
+        ret_val = (double)flow;
+        ESP_LOGVV(TAG, "Found max_flow with '%d'->'%f'", flow, ret_val.value());
+      }
     }
     return ret_val;
   };
@@ -168,12 +170,13 @@ private:
       ret_val = this->get_615B(telegram);  
     }
     else if ((tpl_ci_field == 0x79) && (l_field > 49)) {
-       
-      uint32_t flow{0};
-      uint8_t i = 34;
-      flow = (((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]));
-      ret_val = (double)flow;
-      ESP_LOGVV(TAG, "Found min_flow_temperature_c with '%d'->'%f'", flow, ret_val.value());
+      if (signature == 0xF3A9) {   
+        uint32_t flow{0};
+        uint8_t i = 34;
+        flow = (((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]));
+        ret_val = (double)flow;
+        ESP_LOGVV(TAG, "Found min_flow_temperature_c with '%d'->'%f'", flow, ret_val.value());
+      }
     }
     return ret_val;
   };
@@ -185,12 +188,13 @@ private:
       ret_val = this->get_615B(telegram);  
     }
     else if ((tpl_ci_field == 0x79) && (l_field > 49)) {
-       
-      uint32_t flow{0};
-      uint8_t i = 36;
-      flow = (((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]));
-      ret_val = (double)flow;
-      ESP_LOGVV(TAG, "Found max_flow_temperature_c with '%d'->'%f'", flow, ret_val.value());
+      if (signature == 0xF3A9) {   
+        uint32_t flow{0};
+        uint8_t i = 36;
+        flow = (((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]));
+        ret_val = (double)flow;
+        ESP_LOGVV(TAG, "Found max_flow_temperature_c with '%d'->'%f'", flow, ret_val.value());
+      }
     }
     return ret_val;
   };
