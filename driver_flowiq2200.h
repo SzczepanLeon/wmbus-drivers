@@ -22,8 +22,6 @@ struct Flowiq2200: Driver
     add_to_map(ret_val, "volume_flow_lh", this->get_volume_flow_lh(telegram));
     add_to_map(ret_val, "min_flow_lh", this->get_min_flow_lh(telegram));
     add_to_map(ret_val, "max_flow_lh", this->get_max_flow_lh(telegram));
-    add_to_map(ret_val, "min_flow_temperature_c", this->get_min_flow_temperature_c(telegram));
-    add_to_map(ret_val, "max_flow_temperature_c", this->get_max_flow_temperature_c(telegram));
 
     if (ret_val.size() > 0) {
       return ret_val;
@@ -98,7 +96,6 @@ private:
     uint16_t signature = 0;
     if ((tpl_ci_field == 0x79) && (l_field > 49)) {
         signature = ((uint16_t)telegram[20] << 8) | telegram[21];
-       ESP_LOGVV(TAG, "Signature of message is: '%X'", signature); 
     }
     if (tpl_ci_field == 0x78) {
       ret_val = this->get_04FF23(telegram);  
@@ -123,7 +120,6 @@ private:
     uint16_t signature = 0;
     if ((tpl_ci_field == 0x79) && (l_field > 49)) {
         signature = ((uint16_t)telegram[20] << 8) | telegram[21];
-       ESP_LOGVV(TAG, "Signature of message is: '%X'", signature); 
     }
     if (tpl_ci_field == 0x78) {
       ret_val = this->get_023B(telegram);  
@@ -147,7 +143,6 @@ private:
     uint16_t signature = 0;
     if ((tpl_ci_field == 0x79) && (l_field > 49)) {
         signature = ((uint16_t)telegram[20] << 8) | telegram[21];
-       ESP_LOGVV(TAG, "Signature of message is: '%X'", signature); 
     }
     if (tpl_ci_field == 0x78) {
       ret_val = this->get_523B(telegram);  
@@ -170,7 +165,6 @@ private:
     uint16_t signature = 0;
     if ((tpl_ci_field == 0x79) && (l_field > 49)) {
         signature = ((uint16_t)telegram[20] << 8) | telegram[21];
-       ESP_LOGVV(TAG, "Signature of message is: '%X'", signature); 
     }
     if (tpl_ci_field == 0x78) {
       ret_val = this->get_523B(telegram);  
@@ -186,50 +180,5 @@ private:
     }
     return ret_val;
   };
-  esphome::optional<double> get_min_flow_temperature_c(std::vector<unsigned char> &telegram) {
-    esphome::optional<double> ret_val{};
-    uint8_t l_field = telegram[0];
-    uint8_t tpl_ci_field = telegram[19];
-    uint16_t signature = 0;
-    if ((tpl_ci_field == 0x79) && (l_field > 49)) {
-        signature = ((uint16_t)telegram[20] << 8) | telegram[21];
-       ESP_LOGVV(TAG, "Signature of message is: '%X'", signature); 
-    }
-    if (tpl_ci_field == 0x78) {
-      ret_val = this->get_615B(telegram);  
-    }
-    else if ((tpl_ci_field == 0x79) && (l_field > 49)) {
-      if (signature == 0xF3A9) {   
-        uint32_t flow{0};
-        uint8_t i = 34;
-        flow = (((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]));
-        ret_val = (double)flow;
-        ESP_LOGVV(TAG, "Found min_flow_temperature_c with '%d'->'%f'", flow, ret_val.value());
-      }
-    }
-    return ret_val;
-  };
-  esphome::optional<double> get_max_flow_temperature_c(std::vector<unsigned char> &telegram) {
-    esphome::optional<double> ret_val{};
-    uint8_t l_field = telegram[0];
-    uint8_t tpl_ci_field = telegram[19];
-    uint16_t signature = 0;
-    if ((tpl_ci_field == 0x79) && (l_field > 49)) {
-        signature = ((uint16_t)telegram[20] << 8) | telegram[21];
-       ESP_LOGVV(TAG, "Signature of message is: '%X'", signature); 
-    }
-    if (tpl_ci_field == 0x78) {
-      ret_val = this->get_615B(telegram);  
-    }
-    else if ((tpl_ci_field == 0x79) && (l_field > 49)) {
-      if (signature == 0xF3A9) {   
-        uint32_t flow{0};
-        uint8_t i = 36;
-        flow = (((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]));
-        ret_val = (double)flow;
-        ESP_LOGVV(TAG, "Found max_flow_temperature_c with '%d'->'%f'", flow, ret_val.value());
-      }
-    }
-    return ret_val;
-  };
+
 };
