@@ -42,16 +42,13 @@ private:
     esphome::optional<double> ret_val{};
     uint8_t l_field = telegram[0];
     uint8_t tpl_ci_field = telegram[19];
-    uint16_t signature = 0;
-    if ((tpl_ci_field == 0x79) && (l_field > 49)) {
-        signature = ((uint16_t)telegram[20] << 8) | telegram[21];
-       ESP_LOGVV(TAG, "Signature of message is: '%X'", signature); 
-    }
 
     if (tpl_ci_field == 0x78) {
       ret_val = this->get_0413(telegram);
     }
     else if ((tpl_ci_field == 0x79) && (l_field > 49)) {
+       uint16_t signature = ((uint16_t)telegram[20] << 8) | telegram[21];
+       ESP_LOGVV(TAG, "Signature of message is: '%X'", signature); 
        if (signature == 0xF3A9) {
          uint32_t usage{0};
          uint8_t i = 28;
@@ -68,15 +65,13 @@ private:
     esphome::optional<double> ret_val{};
     uint8_t l_field = telegram[0];
     uint8_t tpl_ci_field = telegram[19];
-    uint16_t signature = 0;
-    if ((tpl_ci_field == 0x79) && (l_field > 49)) {
-        signature = ((uint16_t)telegram[20] << 8) | telegram[21];
-       ESP_LOGVV(TAG, "Signature of message is: '%X'", signature); 
-    }
+    
     if (tpl_ci_field == 0x78) {
       ret_val = this->get_4413(telegram);
     }
     else if ((tpl_ci_field == 0x79) && (l_field > 49)) {
+      uint16_t signature = ((uint16_t)telegram[20] << 8) | telegram[21];
+      ESP_LOGVV(TAG, "Signature of message is: '%X'", signature); 
       if (signature == 0xF3A9) {
         uint32_t usage{0};
         uint8_t i = 32;
@@ -93,14 +88,13 @@ private:
     esphome::optional<double> ret_val{};
     uint8_t l_field = telegram[0];
     uint8_t tpl_ci_field = telegram[19];
-    uint16_t signature = 0;
-    if ((tpl_ci_field == 0x79) && (l_field > 49)) {
-        signature = ((uint16_t)telegram[20] << 8) | telegram[21];
-    }
+    
     if (tpl_ci_field == 0x78) {
       ret_val = this->get_04FF23(telegram);  
     }
     else if ((tpl_ci_field == 0x79) && (l_field > 49)) {
+      uint16_t signature = ((uint16_t)telegram[20] << 8) | telegram[21];
+      ESP_LOGVV(TAG, "Signature of message is: '%X'", signature); 
       if (signature == 0xF3A9) { 
         uint32_t status{0};
         uint8_t i = 24;
@@ -117,14 +111,13 @@ private:
     esphome::optional<double> ret_val{};
     uint8_t l_field = telegram[0];
     uint8_t tpl_ci_field = telegram[19];
-    uint16_t signature = 0;
-    if ((tpl_ci_field == 0x79) && (l_field > 49)) {
-        signature = ((uint16_t)telegram[20] << 8) | telegram[21];
-    }
+    
     if (tpl_ci_field == 0x78) {
       ret_val = this->get_023B(telegram);  
     }
     else if ((tpl_ci_field == 0x79) && (l_field > 49)) {
+      uint16_t signature = ((uint16_t)telegram[20] << 8) | telegram[21];
+      ESP_LOGVV(TAG, "Signature of message is: '%X'", signature); 
       if (signature == 0xF3A9) {
         uint32_t flow{0};
         uint8_t i = 22;
@@ -140,14 +133,13 @@ private:
     esphome::optional<double> ret_val{};
     uint8_t l_field = telegram[0];
     uint8_t tpl_ci_field = telegram[19];
-    uint16_t signature = 0;
-    if ((tpl_ci_field == 0x79) && (l_field > 49)) {
-        signature = ((uint16_t)telegram[20] << 8) | telegram[21];
-    }
+
     if (tpl_ci_field == 0x78) {
       ret_val = this->get_523B(telegram);  
     }
     else if ((tpl_ci_field == 0x79) && (l_field > 49)) {
+      uint16_t signature = ((uint16_t)telegram[20] << 8) | telegram[21];
+      ESP_LOGVV(TAG, "Signature of message is: '%X'", signature); 
       if (signature == 0xF3A9) {   
         uint32_t flow{0};
         uint8_t i = 27;
@@ -162,14 +154,13 @@ private:
     esphome::optional<double> ret_val{};
     uint8_t l_field = telegram[0];
     uint8_t tpl_ci_field = telegram[19];
-    uint16_t signature = 0;
-    if ((tpl_ci_field == 0x79) && (l_field > 49)) {
-        signature = ((uint16_t)telegram[20] << 8) | telegram[21];
-    }
+
     if (tpl_ci_field == 0x78) {
       ret_val = this->get_523B(telegram);  
     }
     else if ((tpl_ci_field == 0x79) && (l_field > 49)) {
+      uint16_t signature = ((uint16_t)telegram[20] << 8) | telegram[21];
+      ESP_LOGVV(TAG, "Signature of message is: '%X'", signature); 
       if (signature == 0xF3A9) {   
         uint32_t flow{0};
         uint8_t i = 40;
