@@ -4,7 +4,7 @@
 */
 
 #pragma once
-
+ 
 #include "driver.h"
 
 #include <vector>
@@ -20,6 +20,7 @@ struct Flowiq2200: Driver
     add_to_map(ret_val, "target_water_m3", this->get_target_water_m3(telegram));
     add_to_map(ret_val, "status", this->get_status(telegram));
     add_to_map(ret_val, "volume_flow_lh", this->get_volume_flow_lh(telegram));
+    add_to_map(ret_val, "min_flow_lh", this->get_min_flow_lh(telegram));
     add_to_map(ret_val, "max_flow_lh", this->get_max_flow_lh(telegram));
 
     if (ret_val.size() > 0) {
@@ -41,17 +42,22 @@ private:
     esphome::optional<double> ret_val{};
     uint8_t l_field = telegram[0];
     uint8_t tpl_ci_field = telegram[19];
+
     if (tpl_ci_field == 0x78) {
       ret_val = this->get_0413(telegram);
     }
-    // else if ((tpl_ci_field == 0x79) && (l_field > 49)) {
-    //   uint32_t usage{0};
-    //   uint8_t i = 46;
-    //   usage = (((uint32_t)telegram[i+3] << 24) | ((uint32_t)telegram[i+2] << 16) |
-    //            ((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]));
-    //   ret_val = usage / 1000.0;
-    //   ESP_LOGVV(TAG, "Found total_water with '%d'->'%f'", usage, ret_val.value());
-    // }
+    else if ((tpl_ci_field == 0x79) && (l_field > 49)) {
+       uint16_t signature = ((uint16_t)telegram[20] << 8) | telegram[21];
+       ESP_LOGVV(TAG, "Signature of message is: '%X'", signature); 
+       if (signature == 0xF3A9) {
+         uint32_t usage{0};
+         uint8_t i = 28;
+         usage = (((uint32_t)telegram[i+3] << 24) | ((uint32_t)telegram[i+2] << 16) |
+                  ((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]));
+         ret_val = usage / 1000.0;
+         ESP_LOGVV(TAG, "Found total_water with '%d'->'%f'", usage, ret_val.value());
+        }
+    }
     return ret_val;
   };
 
@@ -59,17 +65,22 @@ private:
     esphome::optional<double> ret_val{};
     uint8_t l_field = telegram[0];
     uint8_t tpl_ci_field = telegram[19];
+    
     if (tpl_ci_field == 0x78) {
       ret_val = this->get_4413(telegram);
     }
-    // else if ((tpl_ci_field == 0x79) && (l_field > 49)) {
-    //   uint32_t usage{0};
-    //   uint8_t i = 28;
-    //   usage = (((uint32_t)telegram[i+3] << 24) | ((uint32_t)telegram[i+2] << 16) |
-    //            ((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]));
-    //   ret_val = usage / 1000.0;
-    //   ESP_LOGVV(TAG, "Found target_water with '%d'->'%f'", usage, ret_val.value());
-    // }
+    else if ((tpl_ci_field == 0x79) && (l_field > 49)) {
+      uint16_t signature = ((uint16_t)telegram[20] << 8) | telegram[21];
+      ESP_LOGVV(TAG, "Signature of message is: '%X'", signature); 
+      if (signature == 0xF3A9) {
+        uint32_t usage{0};
+        uint8_t i = 32;
+        usage = (((uint32_t)telegram[i+3] << 24) | ((uint32_t)telegram[i+2] << 16) |
+                 ((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]));
+        ret_val = usage / 1000.0;
+        ESP_LOGVV(TAG, "Found target_water with '%d'->'%f'", usage, ret_val.value());
+      }
+    }
     return ret_val;
   };
 
@@ -77,17 +88,22 @@ private:
     esphome::optional<double> ret_val{};
     uint8_t l_field = telegram[0];
     uint8_t tpl_ci_field = telegram[19];
+    
     if (tpl_ci_field == 0x78) {
       ret_val = this->get_04FF23(telegram);  
     }
-    // else if ((tpl_ci_field == 0x79) && (l_field > 49)) {
-    //   uint32_t status{0};
-    //   uint8_t i = 24;
-    //   status = (((uint32_t)telegram[i+3] << 24) | ((uint32_t)telegram[i+2] << 16) |
-    //             ((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]));
-    //   ret_val = (double)status;
-    //   ESP_LOGVV(TAG, "Found status with '%08X'", status);
-    // }
+    else if ((tpl_ci_field == 0x79) && (l_field > 49)) {
+      uint16_t signature = ((uint16_t)telegram[20] << 8) | telegram[21];
+      ESP_LOGVV(TAG, "Signature of message is: '%X'", signature); 
+      if (signature == 0xF3A9) { 
+        uint32_t status{0};
+        uint8_t i = 24;
+        status = (((uint32_t)telegram[i+3] << 24) | ((uint32_t)telegram[i+2] << 16) |
+                  ((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]));
+        ret_val = (double)status;
+        ESP_LOGVV(TAG, "Found status with '%08X'", status);
+      }
+    }
     return ret_val;
   };
 
@@ -95,33 +111,64 @@ private:
     esphome::optional<double> ret_val{};
     uint8_t l_field = telegram[0];
     uint8_t tpl_ci_field = telegram[19];
+    
     if (tpl_ci_field == 0x78) {
       ret_val = this->get_023B(telegram);  
     }
-    // else if ((tpl_ci_field == 0x79) && (l_field > 49)) {
-    //   uint32_t flow{0};
-    //   uint8_t i = 44;
-    //   flow = (((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]));
-    //   ret_val = (double)flow;
-    //   ESP_LOGVV(TAG, "Found volume_flow with '%d'->'%f'", flow, ret_val.value());
-    // }
+    else if ((tpl_ci_field == 0x79) && (l_field > 49)) {
+      uint16_t signature = ((uint16_t)telegram[20] << 8) | telegram[21];
+      ESP_LOGVV(TAG, "Signature of message is: '%X'", signature); 
+      if (signature == 0xF3A9) {
+        uint32_t flow{0};
+        uint8_t i = 22;
+        flow = (((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]));
+        ret_val = (double)flow;
+        ESP_LOGVV(TAG, "Found volume_flow with '%d'->'%f'", flow, ret_val.value());
+      }
+    }
     return ret_val;
   };
 
+  esphome::optional<double> get_min_flow_lh(std::vector<unsigned char> &telegram) {
+    esphome::optional<double> ret_val{};
+    uint8_t l_field = telegram[0];
+    uint8_t tpl_ci_field = telegram[19];
+
+    if (tpl_ci_field == 0x78) {
+      ret_val = this->get_523B(telegram);  
+    }
+    else if ((tpl_ci_field == 0x79) && (l_field > 49)) {
+      uint16_t signature = ((uint16_t)telegram[20] << 8) | telegram[21];
+      ESP_LOGVV(TAG, "Signature of message is: '%X'", signature); 
+      if (signature == 0xF3A9) {   
+        uint32_t flow{0};
+        uint8_t i = 27;
+        flow = (((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]));
+        ret_val = (double)flow;
+        ESP_LOGVV(TAG, "Found min_flow with '%d'->'%f'", flow, ret_val.value());
+      }
+    }
+    return ret_val;
+  };
   esphome::optional<double> get_max_flow_lh(std::vector<unsigned char> &telegram) {
     esphome::optional<double> ret_val{};
     uint8_t l_field = telegram[0];
     uint8_t tpl_ci_field = telegram[19];
+
     if (tpl_ci_field == 0x78) {
       ret_val = this->get_523B(telegram);  
     }
-    // else if ((tpl_ci_field == 0x79) && (l_field > 49)) {
-    //   uint32_t flow{0};
-    //   uint8_t i = 32;
-    //   flow = (((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]));
-    //   ret_val = (double)flow;
-    //   ESP_LOGVV(TAG, "Found max_flow with '%d'->'%f'", flow, ret_val.value());
-    // }
+    else if ((tpl_ci_field == 0x79) && (l_field > 49)) {
+      uint16_t signature = ((uint16_t)telegram[20] << 8) | telegram[21];
+      ESP_LOGVV(TAG, "Signature of message is: '%X'", signature); 
+      if (signature == 0xF3A9) {   
+        uint32_t flow{0};
+        uint8_t i = 40;
+        flow = (((uint32_t)telegram[i+1] << 8)  | ((uint32_t)telegram[i+0]));
+        ret_val = (double)flow;
+        ESP_LOGVV(TAG, "Found max_flow with '%d'->'%f'", flow, ret_val.value());
+      }
+    }
     return ret_val;
   };
 
