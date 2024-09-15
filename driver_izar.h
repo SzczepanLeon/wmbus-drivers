@@ -13,6 +13,11 @@
 
 struct Izar: Driver
 {
+  // the method Driver::processContent(Telegram *t) in driver_izar.cc
+  // (https://github.com/wmbusmeters/wmbusmeters/blob/master/src/driver_izar.cc:187)
+  // uses two different keys:
+  const uint32_t keys[3] = {0xb71f0ae8, 0xdfd109e8, 0x0};
+  
   Izar(std::string key = "") : Driver(std::string("izar"), key) {};
   virtual esphome::optional<std::map<std::string, double>> get_values(std::vector<unsigned char> &telegram) override {
     std::map<std::string, double> ret_val{};
@@ -137,15 +142,21 @@ private:
       return 0;
     }
 
-    uint32_t key = 0xdfd109e8;
-    key ^= uintFromBytes(encoded + 2);
-    key ^= uintFromBytes(encoded + 6);
-    key ^= uintFromBytes(encoded + 10);
+    const uint8_t  size = len - 15;
+    for (uint32_t key: keys) {
+      if (!key) {
+	return 0;
+      }
+      key ^= uintFromBytes(encoded + 2);
+      key ^= uintFromBytes(encoded + 6);
+      key ^= uintFromBytes(encoded + 10);
 
-    const uint8_t size = len - 15;
-    for (uint8_t i = 0; i < size; i++) {
-      key = hashShiftKey(key);
-      decoded[i] = encoded[i + 15] ^ (key & 0xFF);
+      for (uint8_t i = 0; i < size; i++) {
+        key = hashShiftKey(key);
+        decoded[i] = encoded[i + 15] ^ (key & 0xFF);
+      }
+      if (decoded[0] == 0x4B)
+        break;
     }
 
     if (decoded[0] != 0x4B) {
