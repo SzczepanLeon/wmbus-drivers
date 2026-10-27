@@ -1,0 +1,9 @@
+{
+  "name": "wmbus-drivers",
+  "version": "1.3.13",
+  "description": "wM-Bus drivers for ESPHome",
+  "build": {
+    "srcDir": ".",
+    "includeDir": "."
+  }
+}
