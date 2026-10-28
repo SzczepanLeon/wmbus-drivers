@@ -29,32 +29,44 @@ struct Qheat : Driver
 
 private:
   esphome::optional<double> get_current_hca(std::vector<unsigned char> &telegram) {
-    // 1. Ramka 58-bajtowa (CI=0x72 na bajcie 10): szukamy markera 0x0C 0x0D (indeks 20-21)
-    for (size_t i = 18; i + 6 < telegram.size(); i++) {
-      if (telegram[i] == 0x0C && telegram[i+1] == 0x0D) {
-        return (double)bcd_2_int(telegram, i + 2, 4);
+    double val = 0;
+    // 1. Pełna ramka 66-bajtowa (CI = 0x72 na bajcie 10)
+    // Bajty: [23]=0x0C, [24]=0x0D, [25..28]=BCD (np. 22 45 00 00 -> 4522 / 4573)
+    if (telegram.size() > 28 && telegram[10] == 0x72) {
+      for (size_t i = 19; i <= 25; i++) {
+        if (telegram[i] == 0x0C && telegram[i+1] == 0x0D) {
+          val = (double)bcd_2_int(telegram, i + 2, 4);
+          if (val < 100000) return val;
+        }
       }
     }
-    // 2. Jeśli to krótsza ramka Qundis (bez 0x72, z 0x0D na bajcie 14):
-    if (telegram.size() > 21 && telegram[14] == 0x0D) {
-      return (double)bcd_2_int(telegram, 15, 4);
+    // 2. Krótka ramka Qheat (CI = 0x7A na bajcie 10, oryginalny offset z v1.3.13)
+    if (telegram.size() > 20 && telegram[10] == 0x7A) {
+      if (telegram[14] == 0x0C && (telegram[15] == 0x0D || telegram[15] == 0x0E)) {
+        val = (double)bcd_2_int(telegram, 16, 4);
+        if (val < 100000) return val;
+      }
     }
     return {};
   };
 
   esphome::optional<double> get_previous_hca(std::vector<unsigned char> &telegram) {
-    for (size_t i = 20; i + 6 < telegram.size(); i++) {
-      if (telegram[i] == 0x4C && telegram[i+1] == 0x0D) {
-        return (double)bcd_2_int(telegram, i + 2, 4);
+    if (telegram.size() > 34 && telegram[10] == 0x72) {
+      for (size_t i = 25; i <= 32; i++) {
+        if (telegram[i] == 0x4C && telegram[i+1] == 0x0D) {
+          return (double)bcd_2_int(telegram, i + 2, 4);
+        }
       }
     }
     return {};
   };
 
   esphome::optional<double> get_temperature(std::vector<unsigned char> &telegram) {
-    for (size_t i = 25; i + 7 < telegram.size(); i++) {
-      if (telegram[i] == 0xCC && telegram[i+1] == 0x08 && telegram[i+2] == 0x0D) {
-        return ((double)bcd_2_int(telegram, i + 3, 4)) / 100.0;
+    if (telegram.size() > 45 && telegram[10] == 0x72) {
+      for (size_t i = 32; i + 6 < telegram.size(); i++) {
+        if (telegram[i] == 0xCC && telegram[i+1] == 0x08 && telegram[i+2] == 0x0D) {
+          return ((double)bcd_2_int(telegram, i + 3, 4)) / 100.0;
+        }
       }
     }
     return {};
