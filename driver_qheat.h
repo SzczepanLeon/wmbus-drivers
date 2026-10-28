@@ -16,8 +16,8 @@ struct Qheat : Driver
     std::map<std::string, double> ret_val{};
 
     add_to_map(ret_val, "total_energy_consumption_gj", this->get_current_hca(telegram));
-    add_to_map(ret_val, "last_month_energy_consumption_gj", this->get_previous_hca(telegram));
-    add_to_map(ret_val, "current_temperature_c", this->get_temperature(telegram));
+    add_to_map(ret_val, "total_energy_consumption_kwh", this->get_previous_hca(telegram));
+    add_to_map(ret_val, "flow_temperature_c", this->get_temperature(telegram));
 
     if (ret_val.size() > 0) {
       return ret_val;
@@ -29,7 +29,6 @@ struct Qheat : Driver
 
 private:
   esphome::optional<double> get_current_hca(std::vector<unsigned char> &telegram) {
-    // Odczytujemy tylko pełne ramki (66 bajtów, CI=0x72 na bajcie 10)
     if (telegram.size() >= 60 && telegram[10] == 0x72) {
       for (size_t i = 20; i < 26; i++) {
         if (telegram[i] == 0x0C && telegram[i+1] == 0x0D) {
