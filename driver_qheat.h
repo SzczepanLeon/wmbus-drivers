@@ -29,21 +29,23 @@ struct Qheat : Driver
 
 private:
   esphome::optional<double> get_current_hca(std::vector<unsigned char> &telegram) {
-    // Dekodujemy wyłącznie pełną ramkę (66 bajtów, CI=0x72 na bajcie 10)
-    // Wartość bieżąca (np. 4573 j.) znajduje się na bajtach 23..26 tuż po markerze 0x0C 0x0D (bajty 21..22)
+    // Odczytujemy tylko pełne ramki (66 bajtów, CI=0x72 na bajcie 10)
     if (telegram.size() >= 60 && telegram[10] == 0x72) {
-      if (telegram[21] == 0x0C && telegram[22] == 0x0D) {
-        return (double)bcd_2_int(telegram, 23, 4);
+      for (size_t i = 20; i < 26; i++) {
+        if (telegram[i] == 0x0C && telegram[i+1] == 0x0D) {
+          return (double)bcd_2_int(telegram, i + 2, 4);
+        }
       }
     }
-    // Krótkie ramki kompaktowe są ignorowane (zwracamy puste {}), dzięki czemu nie wskakuje 356665 j.
     return {};
   };
 
   esphome::optional<double> get_previous_hca(std::vector<unsigned char> &telegram) {
     if (telegram.size() >= 60 && telegram[10] == 0x72) {
-      if (telegram[27] == 0x4C && telegram[28] == 0x0D) {
-        return (double)bcd_2_int(telegram, 29, 4);
+      for (size_t i = 25; i < 35; i++) {
+        if (telegram[i] == 0x4C && telegram[i+1] == 0x0D) {
+          return (double)bcd_2_int(telegram, i + 2, 4);
+        }
       }
     }
     return {};
@@ -51,8 +53,10 @@ private:
 
   esphome::optional<double> get_temperature(std::vector<unsigned char> &telegram) {
     if (telegram.size() >= 60 && telegram[10] == 0x72) {
-      if (telegram[37] == 0xCC && telegram[38] == 0x08 && telegram[39] == 0x0D) {
-        return ((double)bcd_2_int(telegram, 40, 4)) / 100.0;
+      for (size_t i = 30; i + 6 < telegram.size(); i++) {
+        if (telegram[i] == 0xCC && telegram[i+1] == 0x08 && telegram[i+2] == 0x0D) {
+          return ((double)bcd_2_int(telegram, i + 3, 4)) / 100.0;
+        }
       }
     }
     return {};
