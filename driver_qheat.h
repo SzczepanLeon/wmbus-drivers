@@ -17,7 +17,6 @@ struct Qheat : Driver
 
     add_to_map(ret_val, "total_energy_consumption_gj", this->get_current_hca(telegram));
     add_to_map(ret_val, "total_energy_consumption_kwh", this->get_previous_hca(telegram));
-    // Pomijamy temperaturę, ponieważ ramki C1 Qundis nie zawierają jej na stałej pozycji
 
     if (ret_val.size() > 0) {
       return ret_val;
@@ -33,20 +32,19 @@ private:
   }
 
   esphome::optional<double> get_current_hca(std::vector<unsigned char> &telegram) {
+    // Szukamy głównego rejestru energii w ramkach C1 Santech / Qundis
     for (size_t i = 10; i + 4 < telegram.size(); i++) {
-      if (telegram[i] == 0xC0 && telegram[i+1] == 0x0D && telegram[i+2] == 0xFF && telegram[i+3] == 0xFF) {
-        if (is_valid_bcd_byte(telegram[i+4])) {
-          double val = (double)bcd_2_int(telegram, i + 4, 3);
-          if (val > 0 && val < 100000) return val;
-        }
+      // Często markerem głównej energii w tych modelach jest sekwencja ze znacznikiem BCD lub 4-bajtowym integerem
+      if ((telegram[i] == 0x0C || telegram[i] == 0x04 || telegram[i] == 0x03) && is_valid_bcd_byte(telegram[i+2])) {
+        double val = (double)bcd_2_int(telegram, i + 2, 4);
+        if (val > 100 && val < 1000000) return val;
       }
     }
-    for (size_t i = 10; i + 5 < telegram.size(); i++) {
-      if (telegram[i] == 0x0C && telegram[i+1] == 0x0D) {
-        if (is_valid_bcd_byte(telegram[i+2])) {
-          double val = (double)bcd_2_int(telegram, i + 2, 3);
-          if (val > 0 && val < 100000) return val;
-        }
+    // Fallback dla uniwersalnego markera C0 0D
+    for (size_t i = 10; i + 4 < telegram.size(); i++) {
+      if (telegram[i] == 0xC0 && telegram[i+1] == 0x0D) {
+        double val = (double)bcd_2_int(telegram, i + 2, 4);
+        if (val > 100 && val < 1000000) return val;
       }
     }
     return {};
@@ -56,15 +54,11 @@ private:
     for (size_t i = 15; i + 5 < telegram.size(); i++) {
       if (telegram[i] == 0x4C && telegram[i+1] == 0x0D) {
         if (is_valid_bcd_byte(telegram[i+2])) {
-          double val = (double)bcd_2_int(telegram, i + 2, 3);
-          if (val >= 0 && val < 100000) return val;
+          double val = (double)bcd_2_int(telegram, i + 2, 4);
+          if (val >= 0 && val < 1000000) return val;
         }
       }
     }
     return {};
-  };
-
-  esphome::optional<double> get_temperature(std::vector<unsigned char> &telegram) {
-    return {}; // Wyłączone ze względu na brak stabilnego mapowania w trybie C1
   };
 };
